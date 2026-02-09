@@ -1,0 +1,19 @@
+@model IEnumerable<AppointmentSystem.Application.DTOs.BranchDto>
+@{
+    ViewData["Title"] = "Seleccione una Sucursal";
+}
+
+<h2>Bienvenido a nuestro centro de estética</h2>
+<p>Por favor, seleccione la sucursal donde desea agendar su cita:</p>
+
+<div class="grid">
+    @foreach (var branch in Model)
+    {
+        <div class="card">
+            <h3>@branch.Name</h3>
+            <p>@branch.Address</p>
+            <p>Tel: @branch.Phone</p>
+            <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@branch.Id" class="btn btn-primary">Ver Servicios</a>
+        </div>
+    }
+</div>

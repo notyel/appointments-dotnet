@@ -1,0 +1,26 @@
+@model IEnumerable<AppointmentSystem.Application.DTOs.ProfessionalDto>
+@{
+    ViewData["Title"] = "Seleccione Especialista";
+}
+
+<h2>Nuestros Especialistas</h2>
+<p>Elija el profesional que le atenderá:</p>
+
+<div class="grid">
+    @foreach (var prof in Model)
+    {
+        <div class="card">
+            <h3>@prof.FullName</h3>
+            <p>@prof.Email</p>
+            <a asp-controller="Booking" asp-action="Slots"
+               asp-route-branchId="@ViewBag.BranchId"
+               asp-route-branchServiceId="@ViewBag.BranchServiceId"
+               asp-route-professionalId="@prof.Id"
+               class="btn btn-primary">Ver Disponibilidad</a>
+        </div>
+    }
+</div>
+
+<div style="margin-top: 2rem;">
+    <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@ViewBag.BranchId" class="btn btn-secondary">Volver a Servicios</a>
+</div>

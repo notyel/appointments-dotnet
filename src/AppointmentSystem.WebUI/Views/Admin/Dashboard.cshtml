@@ -1,0 +1,51 @@
+@model IEnumerable<AppointmentSystem.Application.DTOs.AppointmentDto>
+@{
+    var branch = (AppointmentSystem.Application.DTOs.BranchDto)ViewBag.Branch;
+    ViewData["Title"] = "Dashboard - " + branch.Name;
+}
+
+<h2>Agenda del Día - @branch.Name</h2>
+<p>Fecha: @DateTime.Today.ToLongDateString()</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Servicio</th>
+                <th>Especialista</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderBy(a => a.StartTime))
+            {
+                <tr>
+                    <td>@item.StartTime.ToString("HH:mm")</td>
+                    <td>@item.ServiceName</td>
+                    <td>@item.ProfessionalName</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <a href="#" class="btn btn-secondary">Detalles</a>
+                        <a href="#" class="btn btn-primary">Confirmar</a>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" style="text-align: center;">No hay citas agendadas para hoy.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 2rem;">
+    <h3>Gestión de Sucursal</h3>
+    <a href="#" class="btn btn-secondary">Horarios de Atención</a>
+    <a href="#" class="btn btn-secondary">Personal Asignado</a>
+    <a href="#" class="btn btn-secondary">Servicios en Sucursal</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver a Sucursales</a>
+</div>

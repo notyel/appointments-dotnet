@@ -1,0 +1,59 @@
+@model IEnumerable<AppointmentSystem.Application.DTOs.AppointmentDto>
+@{
+    ViewData["Title"] = "Mis Citas";
+}
+
+<h2>Próximas Citas para @ViewBag.Email</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div style="color: var(--error-color); margin-bottom: 1rem; border: 1px solid var(--error-color); padding: 0.5rem; border-radius: 4px;">
+        @TempData["Error"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <p>No se encontraron citas próximas para este correo.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sucursal</th>
+                <th>Servicio</th>
+                <th>Especialista</th>
+                <th>Fecha y Hora</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BranchName</td>
+                    <td>@item.ServiceName</td>
+                    <td>@item.ProfessionalName</td>
+                    <td>@item.StartTime.ToString("g")</td>
+                    <td>@item.Status</td>
+                    <td>
+                        @if (item.Status != "Cancelled" && item.StartTime > DateTime.Now)
+                        {
+                            <form asp-action="Cancel" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="hidden" name="email" value="@ViewBag.Email" />
+                                <button type="submit" class="btn btn-error" style="background-color: var(--error-color); color: white;" onclick="return confirm('¿Está seguro de cancelar esta cita?')">Cancelar</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div style="margin-top: 2rem;">
+    <a asp-action="Index" class="btn btn-secondary">Nueva Búsqueda</a>
+</div>

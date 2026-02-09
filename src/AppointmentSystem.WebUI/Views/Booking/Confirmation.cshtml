@@ -1,0 +1,13 @@
+@model Guid
+@{
+    ViewData["Title"] = "Cita Confirmada";
+}
+
+<div style="text-align: center; margin-top: 3rem;">
+    <h2 style="color: var(--success-color);">¡Su cita ha sido reservada con éxito!</h2>
+    <p>Número de referencia: @Model</p>
+    <p>Hemos enviado un correo con los detalles de su reserva.</p>
+    <div style="margin-top: 2rem;">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Volver al Inicio</a>
+    </div>
+</div>
