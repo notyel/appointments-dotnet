@@ -1,0 +1,26 @@
+@model IEnumerable<AppointmentSystem.Application.DTOs.BranchDto>
+@{
+    ViewData["Title"] = "Panel de Administración";
+}
+
+<h2>Administración del Negocio</h2>
+<p>Seleccione una sucursal para gestionar su agenda y configuración:</p>
+
+<div class="grid">
+    @foreach (var branch in Model)
+    {
+        <div class="card">
+            <h3>@branch.Name</h3>
+            <p>@branch.Address</p>
+            <a asp-action="Dashboard" asp-route-branchId="@branch.Id" class="btn btn-primary">Gestionar Sucursal</a>
+        </div>
+    }
+</div>
+
+<div style="margin-top: 2rem; padding: 1rem; border: 1px dashed #ccc;">
+    <h3>Gestión Global</h3>
+    <p>Acciones para todo el negocio:</p>
+    <a href="#" class="btn btn-secondary">Configuración General</a>
+    <a href="#" class="btn btn-secondary">Listado de Servicios</a>
+    <a href="#" class="btn btn-secondary">Reportes Globales</a>
+</div>

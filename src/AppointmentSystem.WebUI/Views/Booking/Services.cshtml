@@ -1,0 +1,28 @@
+@model IEnumerable<AppointmentSystem.Application.DTOs.ServiceDto>
+@{
+    ViewData["Title"] = "Servicios en " + ViewBag.BranchName;
+}
+
+<h2>Servicios Disponibles</h2>
+<p>Sucursal: @ViewBag.BranchName</p>
+
+<div class="grid">
+    @foreach (var service in Model)
+    {
+        <div class="card">
+            <h3>@service.Name</h3>
+            <p>@service.Description</p>
+            <p><strong>Duración:</strong> @service.DurationMinutes min</p>
+            <p><strong>Precio:</strong> $@service.Price</p>
+            <p>Categoría: @service.Category</p>
+            <a asp-controller="Booking" asp-action="Professionals"
+               asp-route-branchId="@ViewBag.BranchId"
+               asp-route-branchServiceId="@service.Id"
+               class="btn btn-primary">Seleccionar Especialista</a>
+        </div>
+    }
+</div>
+
+<div style="margin-top: 2rem;">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver a Sucursales</a>
+</div>
