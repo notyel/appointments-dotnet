@@ -76,21 +76,30 @@ public class BranchManagementService : IBranchManagementService
         if (bs == null) return Enumerable.Empty<DateTime>();
 
         var duration = bs.DurationMinutes;
-        var start = date.Date.AddHours(9);
-        var end = date.Date.AddHours(17);
+        
+        // Convertir a UTC para trabajar con la base de datos
+        var dateUtc = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc);
+        var startUtc = dateUtc.AddHours(9);
+        var endUtc = dateUtc.AddHours(17);
 
         // Fetch existing appointments for the professional on that day
         var existingAppointments = await _unitOfWork.Repository<Appointment>()
-            .FindAsync(a => a.ProfessionalId == professionalId && a.StartTime.Date == date.Date && a.Status != Domain.Enums.AppointmentStatus.Cancelled);
+            .FindAsync(a => a.ProfessionalId == professionalId 
+                && a.StartTime >= dateUtc 
+                && a.StartTime < dateUtc.AddDays(1) 
+                && a.Status != Domain.Enums.AppointmentStatus.Cancelled);
 
         // Fetch all branch appointments to check capacity
         var branch = await _unitOfWork.Repository<Branch>().GetByIdAsync(bs.BranchId);
         var branchAppointments = await _unitOfWork.Repository<Appointment>()
-            .FindAsync(a => a.BranchId == bs.BranchId && a.StartTime.Date == date.Date && a.Status != Domain.Enums.AppointmentStatus.Cancelled);
+            .FindAsync(a => a.BranchId == bs.BranchId 
+                && a.StartTime >= dateUtc 
+                && a.StartTime < dateUtc.AddDays(1) 
+                && a.Status != Domain.Enums.AppointmentStatus.Cancelled);
 
         var slots = new List<DateTime>();
-        var current = start;
-        while (current.AddMinutes(duration) <= end)
+        var current = startUtc;
+        while (current.AddMinutes(duration) <= endUtc)
         {
             var slotEnd = current.AddMinutes(duration);
 

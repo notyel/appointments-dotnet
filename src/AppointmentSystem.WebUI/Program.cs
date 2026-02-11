@@ -26,8 +26,8 @@ using (var scope = app.Services.CreateScope())
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
         var logger = services.GetRequiredService<ILogger<Program>>();
-        // context.Database.Migrate(); // Only if using migrations
-        context.Database.EnsureCreated();
+        context.Database.Migrate();
+        
         await DbInitializer.SeedAsync(context, userManager, roleManager, logger);
     }
     catch (Exception ex)
@@ -41,7 +41,6 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

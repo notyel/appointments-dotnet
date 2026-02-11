@@ -19,8 +19,13 @@ public class AppointmentService : IAppointmentService
 
     public async Task<IEnumerable<AppointmentDto>> GetBranchAppointmentsAsync(Guid branchId, DateTime date)
     {
+        var dateUtc = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc);
+        var nextDayUtc = dateUtc.AddDays(1);
+        
         var appointments = await _unitOfWork.Repository<Appointment>()
-            .FindAsync(a => a.BranchId == branchId && a.StartTime.Date == date.Date,
+            .FindAsync(a => a.BranchId == branchId 
+                && a.StartTime >= dateUtc 
+                && a.StartTime < nextDayUtc,
                 a => a.BranchService.Service,
                 a => a.Professional);
 
@@ -40,13 +45,18 @@ public class AppointmentService : IAppointmentService
         var bs = await _unitOfWork.Repository<BranchService>().GetByIdAsync(dto.BranchServiceId);
         if (bs == null) throw new Exception("Service not found");
 
-        var endTime = dto.StartTime.AddMinutes(bs.DurationMinutes);
+        // Asegurar que el DateTime esté en UTC
+        var startTimeUtc = dto.StartTime.Kind == DateTimeKind.Utc 
+            ? dto.StartTime 
+            : DateTime.SpecifyKind(dto.StartTime, DateTimeKind.Utc);
+        
+        var endTime = startTimeUtc.AddMinutes(bs.DurationMinutes);
 
         // Correct Overlap Check
         var overlaps = await _unitOfWork.Repository<Appointment>().FindAsync(a =>
             a.ProfessionalId == dto.ProfessionalId &&
             a.Status != AppointmentStatus.Cancelled &&
-            dto.StartTime < a.EndTime && endTime > a.StartTime);
+            startTimeUtc < a.EndTime && endTime > a.StartTime);
 
         if (overlaps.Any())
         {
@@ -60,7 +70,7 @@ public class AppointmentService : IAppointmentService
             var branchAppointments = await _unitOfWork.Repository<Appointment>().FindAsync(a =>
                 a.BranchId == dto.BranchId &&
                 a.Status != AppointmentStatus.Cancelled &&
-                dto.StartTime < a.EndTime && endTime > a.StartTime);
+                startTimeUtc < a.EndTime && endTime > a.StartTime);
 
             if (branchAppointments.Count() >= branch.SimultaneousCapacity)
             {
@@ -89,7 +99,7 @@ public class AppointmentService : IAppointmentService
             BranchServiceId = dto.BranchServiceId,
             ProfessionalId = dto.ProfessionalId,
             ClientId = client.Id,
-            StartTime = dto.StartTime,
+            StartTime = startTimeUtc,
             EndTime = endTime,
             Status = AppointmentStatus.Created,
             Notes = dto.Notes

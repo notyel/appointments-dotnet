@@ -1,0 +1,19 @@
+type(scope): descripción en español en modo imperativo
+
+# Tipos permitidos:
+# feat → Nueva funcionalidad
+# fix → Corrección de errores
+# docs → Documentación
+# style → Formato sin cambiar lógica
+# refactor → Refactorización
+# perf → Rendimiento
+# test → Pruebas
+# chore → Mantenimiento
+# ci → Integración continua
+
+# Reglas:
+# - Descripción en español
+# - Modo imperativo
+# - Máximo 72 caracteres
+# - Usar scope cuando aplique
+# - Referenciar issue con (#numero)
