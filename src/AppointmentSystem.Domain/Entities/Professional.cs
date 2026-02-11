@@ -9,6 +9,7 @@ public class Professional : BaseEntity
     public string Email { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
+    public string? ImageUrl { get; set; }
 
     public Guid BranchId { get; set; }
     public Branch Branch { get; set; } = null!;

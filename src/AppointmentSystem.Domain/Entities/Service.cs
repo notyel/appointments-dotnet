@@ -8,6 +8,7 @@ public class Service : BaseEntity
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public ServiceCategory Category { get; set; }
+    public string? ImageUrl { get; set; }
 
     public ICollection<BranchService> BranchServices { get; set; } = new List<BranchService>();
 }
