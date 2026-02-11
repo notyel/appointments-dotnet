@@ -3,6 +3,17 @@
     ViewData["Title"] = "Seleccione una Sucursal";
 }
 
+@if (User.IsInRole("Admin") || User.IsInRole("BranchAdmin") || User.IsInRole("Receptionist"))
+{
+    <div class="alert" style="background-color: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; margin-bottom: 2rem;">
+        <strong>👋 Hola, @User.Identity.Name</strong>
+        <p style="margin: 0.5rem 0 0 0;">
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-primary" style="margin-right: 0.5rem;">Ir al Panel de Administración</a>
+            <span style="color: #666;">o continúa navegando como cliente</span>
+        </p>
+    </div>
+}
+
 <h2>Bienvenido a nuestro centro de estética</h2>
 <p>Por favor, seleccione la sucursal donde desea agendar su cita:</p>
 
@@ -17,3 +28,4 @@
         </div>
     }
 </div>
+

@@ -1,29 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AppointmentSystem</title>
+    <title>@ViewData["Title"] - Sistema de Citas</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <h1>Gestión de Citas</h1>
+        <div class="container">
+            <h1>Sistema de Citas</h1>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span class="user-welcome">Hola, @User.Identity.Name</span>
+            }
+        </div>
     </header>
     <nav>
         <a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-        <a asp-area="" asp-controller="Appointments" asp-action="Index">Mis Citas</a>
-        @if (User.IsInRole("Admin") || User.IsInRole("BranchAdmin") || User.IsInRole("Receptionist"))
-        {
-            <a asp-area="" asp-controller="Admin" asp-action="Index">Panel Admin</a>
-        }
+        <a asp-area="" asp-controller="Booking" asp-action="Services">Agendar Cita</a>
         @if (User.Identity?.IsAuthenticated == true)
         {
+            <a asp-area="" asp-controller="Appointments" asp-action="Index">Mis Citas</a>
             <a asp-controller="Account" asp-action="Logout">Cerrar Sesión</a>
         }
         else
         {
-            <a asp-controller="Account" asp-action="Login">Entrar</a>
+            <a asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
         }
     </nav>
     <main role="main" class="container">
@@ -32,7 +35,7 @@
 
     <footer>
         <div class="container">
-            &copy; 2024 - Sistema de Gestión de Citas - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+            &copy; @DateTime.Now.Year - Sistema de Citas - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
         </div>
     </footer>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -24,7 +24,15 @@ public class AccountController : Controller
         var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
         if (result.Succeeded)
         {
-            return RedirectToAction("Index", "Admin");
+            // Redirigir según el rol del usuario
+            if (User.IsInRole("Admin") || User.IsInRole("BranchAdmin") || User.IsInRole("Receptionist"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
         ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
         return View();

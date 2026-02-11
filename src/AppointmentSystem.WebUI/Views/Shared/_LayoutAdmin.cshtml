@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Panel Administrativo</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="admin-layout">
+    <header class="admin-header">
+        <div class="container">
+            <h1>?? Panel de Administración</h1>
+            <div class="user-info">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span>?? @User.Identity.Name</span>
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-sm">Cerrar Sesión</a>
+                }
+            </div>
+        </div>
+    </header>
+    
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <nav class="admin-nav">
+                <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-item">
+                    ?? Mis Sucursales
+                </a>
+                <a href="#" class="nav-item">
+                    ?? Servicios
+                </a>
+                <a href="#" class="nav-item">
+                    ?? Personal
+                </a>
+                <a href="#" class="nav-item">
+                    ?? Reportes
+                </a>
+                <a href="#" class="nav-item">
+                    ?? Configuración
+                </a>
+                <hr />
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-item nav-item-secondary">
+                    ?? Ir al sitio público
+                </a>
+            </nav>
+        </aside>
+        
+        <main role="main" class="admin-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="admin-footer">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Sistema de Gestión de Citas - Panel Administrativo
+        </div>
+    </footer>
+    
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
