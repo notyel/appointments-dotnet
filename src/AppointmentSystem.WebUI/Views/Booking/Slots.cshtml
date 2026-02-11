@@ -1,40 +1,76 @@
 @model IEnumerable<DateTime>
 @{
-    ViewData["Title"] = "Seleccione Horario";
+    ViewData["Title"] = "Seleccione Fecha y Hora";
+    ViewBag.CurrentStep = 4;
     var selectedDate = (DateTime)ViewBag.SelectedDate;
 }
 
-<h2>Disponibilidad para @selectedDate.ToShortDateString()</h2>
+@section Styles {
+    <!-- Iconos adicionales para esta vista -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=warning,arrow_back" rel="stylesheet" />
+}
 
-<form method="get" asp-action="Slots">
-    <input type="hidden" name="branchId" value="@ViewBag.BranchId" />
-    <input type="hidden" name="branchServiceId" value="@ViewBag.BranchServiceId" />
-    <input type="hidden" name="professionalId" value="@ViewBag.ProfessionalId" />
-    <div class="form-group">
-        <label>Cambiar Fecha:</label>
-        <input type="date" name="date" value="@selectedDate.ToString("yyyy-MM-dd")" onchange="this.form.submit()" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+<partial name="_BookingStepper" />
+
+<div class="step-content-card">
+    <h1 class="step-title">Disponibilidad</h1>
+    <p class="step-description">Seleccione la fecha y hora de su preferencia</p>
+
+    <div class="date-selector">
+        <form method="get" asp-action="Slots">
+            <input type="hidden" name="branchId" value="@ViewBag.BranchId" />
+            <input type="hidden" name="branchServiceId" value="@ViewBag.BranchServiceId" />
+            <input type="hidden" name="professionalId" value="@ViewBag.ProfessionalId" />
+            <div class="form-group">
+                <label class="form-label">Seleccionar Fecha:</label>
+                <input type="date" 
+                       name="date" 
+                       value="@selectedDate.ToString("yyyy-MM-dd")" 
+                       onchange="this.form.submit()" 
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            </div>
+        </form>
     </div>
-</form>
 
-<div class="slot-grid">
+    <h3 style="margin-bottom: var(--spacing-lg); color: var(--color-text);">
+        Horarios disponibles para @selectedDate.ToString("dd/MM/yyyy")
+    </h3>
+
     @if (!Model.Any())
     {
-        <p>No hay turnos disponibles para este día.</p>
+        <div class="alert alert-warning">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined">warning</span>
+                <strong>No hay turnos disponibles</strong>
+            </div>
+            <p style="margin: 0.5rem 0 0 0;">No hay horarios disponibles para esta fecha. Por favor, seleccione otra fecha.</p>
+        </div>
     }
-    @foreach (var slot in Model)
+    else
     {
-        <a asp-controller="Booking" asp-action="Create"
-           asp-route-branchId="@ViewBag.BranchId"
-           asp-route-branchServiceId="@ViewBag.BranchServiceId"
-           asp-route-professionalId="@ViewBag.ProfessionalId"
-           asp-route-startTime="@slot.ToString("yyyy-MM-ddTHH:mm:ss")"
-           class="slot-btn">@slot.ToString("HH:mm")</a>
+        <div class="time-slots-grid">
+            @foreach (var slot in Model)
+            {
+                <a asp-controller="Booking" asp-action="Create"
+                   asp-route-branchId="@ViewBag.BranchId"
+                   asp-route-branchServiceId="@ViewBag.BranchServiceId"
+                   asp-route-professionalId="@ViewBag.ProfessionalId"
+                   asp-route-startTime="@slot.ToString("yyyy-MM-ddTHH:mm:ss")"
+                   class="time-slot">
+                    @slot.ToString("HH:mm")
+                </a>
+            }
+        </div>
     }
 </div>
 
-<div style="margin-top: 2rem;">
+<div class="step-navigation">
     <a asp-controller="Booking" asp-action="Professionals"
        asp-route-branchId="@ViewBag.BranchId"
        asp-route-branchServiceId="@ViewBag.BranchServiceId"
-       class="btn btn-secondary">Volver a Especialistas</a>
+       class="btn btn-secondary">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver a Profesionales</span>
+    </a>
+    <div></div>
 </div>

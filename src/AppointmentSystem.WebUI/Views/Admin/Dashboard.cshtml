@@ -2,50 +2,190 @@
 @{
     var branch = (AppointmentSystem.Application.DTOs.BranchDto)ViewBag.Branch;
     ViewData["Title"] = "Dashboard - " + branch.Name;
+    var totalAppointments = Model.Count();
+    var confirmedAppointments = Model.Count(a => a.Status == "Confirmed");
+    var pendingAppointments = Model.Count(a => a.Status == "Pending");
 }
 
-<h2>Agenda del Día - @branch.Name</h2>
-<p>Fecha: @DateTime.Today.ToLongDateString()</p>
+@section Styles {
+    <!-- Iconos adicionales para esta vista -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=arrow_back,check_circle,schedule" rel="stylesheet" />
+}
 
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Hora</th>
-                <th>Servicio</th>
-                <th>Especialista</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.OrderBy(a => a.StartTime))
-            {
-                <tr>
-                    <td>@item.StartTime.ToString("HH:mm")</td>
-                    <td>@item.ServiceName</td>
-                    <td>@item.ProfessionalName</td>
-                    <td>@item.Status</td>
-                    <td>
-                        <a href="#" class="btn btn-secondary">Detalles</a>
-                        <a href="#" class="btn btn-primary">Confirmar</a>
-                    </td>
-                </tr>
-            }
-            @if (!Model.Any())
-            {
-                <tr>
-                    <td colspan="5" style="text-align: center;">No hay citas agendadas para hoy.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="page-header">
+    <h1 class="page-title">
+        <span class="material-symbols-outlined" style="vertical-align: middle;">dashboard</span>
+        Dashboard - @branch.Name
+    </h1>
+    <p class="page-subtitle">@DateTime.Today.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"))</p>
+    <div class="page-actions">
+        <a asp-action="Index" class="btn btn-secondary">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>Volver a Sucursales</span>
+        </a>
+    </div>
 </div>
 
-<div style="margin-top: 2rem;">
-    <h3>Gestión de Sucursal</h3>
-    <a href="#" class="btn btn-secondary">Horarios de Atención</a>
-    <a href="#" class="btn btn-secondary">Personal Asignado</a>
-    <a href="#" class="btn btn-secondary">Servicios en Sucursal</a>
-    <a asp-action="Index" class="btn btn-secondary">Volver a Sucursales</a>
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-card-icon primary">
+                <span class="material-symbols-outlined">event</span>
+            </div>
+        </div>
+        <div class="stat-card-value">@totalAppointments</div>
+        <div class="stat-card-label">Citas de Hoy</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+        </div>
+        <div class="stat-card-value">@confirmedAppointments</div>
+        <div class="stat-card-label">Confirmadas</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning">
+                <span class="material-symbols-outlined">schedule</span>
+            </div>
+        </div>
+        <div class="stat-card-value">@pendingAppointments</div>
+        <div class="stat-card-label">Pendientes</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info">
+                <span class="material-symbols-outlined">business</span>
+            </div>
+        </div>
+        <div class="stat-card-value">@branch.Name</div>
+        <div class="stat-card-label">Sucursal Activa</div>
+    </div>
+</div>
+
+<div class="panel-card">
+    <div class="panel-card-header">
+        <h2 class="panel-card-title">Agenda del Día</h2>
+    </div>
+    <div class="panel-card-body">
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Servicio</th>
+                        <th>Especialista</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderBy(a => a.StartTime))
+                    {
+                        <tr>
+                            <td>
+                                <strong>@item.StartTime.ToString("HH:mm")</strong>
+                            </td>
+                            <td>@item.ServiceName</td>
+                            <td>@item.ProfessionalName</td>
+                            <td>
+                                @if (item.Status == "Confirmed")
+                                {
+                                    <span class="badge badge-success">Confirmada</span>
+                                }
+                                else if (item.Status == "Pending")
+                                {
+                                    <span class="badge badge-warning">Pendiente</span>
+                                }
+                                else if (item.Status == "Cancelled")
+                                {
+                                    <span class="badge badge-error">Cancelada</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-info">@item.Status</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="#" class="btn btn-sm btn-secondary">Detalles</a>
+                                    @if (item.Status == "Pending")
+                                    {
+                                        <a href="#" class="btn btn-sm btn-success">Confirmar</a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: var(--spacing-2xl); color: var(--color-text-light);">
+                                No hay citas agendadas para hoy.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel-card">
+    <div class="panel-card-header">
+        <h2 class="panel-card-title">Gestión de Sucursal</h2>
+    </div>
+    <div class="panel-card-body">
+        <div class="admin-items-grid">
+            <div class="admin-item-card">
+                <div class="admin-item-card-header">
+                    <h3 class="admin-item-card-title">
+                        <span class="material-symbols-outlined" style="vertical-align: middle;">schedule</span>
+                        Horarios
+                    </h3>
+                </div>
+                <div class="admin-item-card-body">
+                    <p class="admin-item-card-text">Configure los horarios de atención de la sucursal</p>
+                </div>
+                <div class="admin-item-card-footer">
+                    <a href="#" class="btn btn-sm btn-primary">Gestionar</a>
+                </div>
+            </div>
+            
+            <div class="admin-item-card">
+                <div class="admin-item-card-header">
+                    <h3 class="admin-item-card-title">
+                        <span class="material-symbols-outlined" style="vertical-align: middle;">people</span>
+                        Personal
+                    </h3>
+                </div>
+                <div class="admin-item-card-body">
+                    <p class="admin-item-card-text">Administre el personal asignado a esta sucursal</p>
+                </div>
+                <div class="admin-item-card-footer">
+                    <a href="#" class="btn btn-sm btn-primary">Gestionar</a>
+                </div>
+            </div>
+            
+            <div class="admin-item-card">
+                <div class="admin-item-card-header">
+                    <h3 class="admin-item-card-title">
+                        <span class="material-symbols-outlined" style="vertical-align: middle;">list_alt</span>
+                        Servicios
+                    </h3>
+                </div>
+                <div class="admin-item-card-body">
+                    <p class="admin-item-card-text">Administre los servicios disponibles en la sucursal</p>
+                </div>
+                <div class="admin-item-card-footer">
+                    <a href="#" class="btn btn-sm btn-primary">Gestionar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

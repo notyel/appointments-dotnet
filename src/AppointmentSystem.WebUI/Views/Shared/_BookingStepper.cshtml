@@ -1,0 +1,46 @@
+@{
+    var currentStep = ViewBag.CurrentStep ?? 1;
+    var steps = new[]
+    {
+        new { Number = 1, Label = "Sucursal" },
+        new { Number = 2, Label = "Servicio" },
+        new { Number = 3, Label = "Profesional" },
+        new { Number = 4, Label = "Fecha y Hora" },
+        new { Number = 5, Label = "Confirmación" }
+    };
+    
+    var progressPercentage = ((currentStep - 1) / (double)(steps.Length - 1)) * 100;
+}
+
+<div class="booking-stepper">
+    <div class="stepper-container">
+        <div class="stepper-progress" style="width: @progressPercentage%"></div>
+        
+        @foreach (var step in steps)
+        {
+            var stepClass = "stepper-step";
+            if (step.Number < currentStep)
+            {
+                stepClass += " completed";
+            }
+            else if (step.Number == currentStep)
+            {
+                stepClass += " active";
+            }
+            
+            <div class="@stepClass">
+                <div class="stepper-step-number">
+                    @if (step.Number < currentStep)
+                    {
+                        <span></span>
+                    }
+                    else
+                    {
+                        <span>@step.Number</span>
+                    }
+                </div>
+                <div class="stepper-step-label">@step.Label</div>
+            </div>
+        }
+    </div>
+</div>

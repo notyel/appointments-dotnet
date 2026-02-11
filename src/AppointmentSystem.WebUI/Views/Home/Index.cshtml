@@ -1,31 +1,57 @@
 @model IEnumerable<AppointmentSystem.Application.DTOs.BranchDto>
 @{
     ViewData["Title"] = "Seleccione una Sucursal";
+    ViewBag.CurrentStep = 1;
+}
+
+@section Styles {
+    <!-- Iconos adicionales para esta vista -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=waving_hand,phone" rel="stylesheet" />
 }
 
 @if (User.IsInRole("Admin") || User.IsInRole("BranchAdmin") || User.IsInRole("Receptionist"))
 {
-    <div class="alert" style="background-color: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; margin-bottom: 2rem;">
-        <strong>👋 Hola, @User.Identity.Name</strong>
+    <div class="alert alert-info" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span class="material-symbols-outlined">waving_hand</span>
+            <strong>Hola, @User.Identity.Name</strong>
+        </div>
         <p style="margin: 0.5rem 0 0 0;">
             <a asp-controller="Admin" asp-action="Index" class="btn btn-primary" style="margin-right: 0.5rem;">Ir al Panel de Administración</a>
-            <span style="color: #666;">o continúa navegando como cliente</span>
+            <span>o continúa navegando como cliente</span>
         </p>
     </div>
 }
 
-<h2>Bienvenido a nuestro centro de estética</h2>
-<p>Por favor, seleccione la sucursal donde desea agendar su cita:</p>
+<partial name="_BookingStepper" />
 
-<div class="grid">
-    @foreach (var branch in Model)
-    {
-        <div class="card">
-            <h3>@branch.Name</h3>
-            <p>@branch.Address</p>
-            <p>Tel: @branch.Phone</p>
-            <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@branch.Id" class="btn btn-primary">Ver Servicios</a>
-        </div>
-    }
+<div class="step-content-card">
+    <h1 class="step-title">Bienvenido a nuestro centro de estética</h1>
+    <p class="step-description">Seleccione la sucursal donde desea agendar su cita</p>
+
+    <div class="options-grid">
+        @foreach (var branch in Model)
+        {
+            <div class="option-card">
+                <div class="option-card-header">
+                    <h3 class="option-card-title">@branch.Name</h3>
+                </div>
+                <div class="option-card-body">
+                    <p class="option-card-text">@branch.Address</p>
+                    <div class="option-card-meta">
+                        <div class="option-card-meta-item">
+                            <span class="material-symbols-outlined option-card-meta-icon">phone</span>
+                            <span>@branch.Phone</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="option-card-footer">
+                    <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@branch.Id" class="btn btn-primary btn-block">
+                        Seleccionar Sucursal
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 

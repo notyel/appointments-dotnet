@@ -4,40 +4,61 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Sistema de Citas</title>
+    <!-- Iconos del Layout Cliente -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/client-portal.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Sistema de Citas</h1>
-            @if (User.Identity?.IsAuthenticated == true)
-            {
-                <span class="user-welcome">Hola, @User.Identity.Name</span>
-            }
+<body class="client-layout">
+    <header class="client-header">
+        <div class="client-header-content">
+            <a asp-controller="Home" asp-action="Index" class="client-logo">
+               <span class="material-symbols-outlined">
+spa
+</span>
+                <span>Sistema de Citas</span>
+            </a>
+            <nav class="client-nav">
+                <a asp-controller="Home" asp-action="Index">
+                   <span class="material-symbols-outlined">home</span>
+                    <span>Inicio</span>
+                </a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-controller="Appointments" asp-action="Index">
+                        <span class="material-symbols-outlined">event</span>
+                        <span>Mis Citas</span>
+                    </a>
+                }
+            </nav>
+            <div class="client-user-info">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span class="material-symbols-outlined">account_circle</span>
+                    <span>@User.Identity.Name</span>
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-sm btn-secondary">Cerrar Sesión</a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-primary">Iniciar Sesión</a>
+                }
+            </div>
         </div>
     </header>
-    <nav>
-        <a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-        <a asp-area="" asp-controller="Booking" asp-action="Services">Agendar Cita</a>
-        @if (User.Identity?.IsAuthenticated == true)
-        {
-            <a asp-area="" asp-controller="Appointments" asp-action="Index">Mis Citas</a>
-            <a asp-controller="Account" asp-action="Logout">Cerrar Sesión</a>
-        }
-        else
-        {
-            <a asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
-        }
-    </nav>
-    <main role="main" class="container">
-        @RenderBody()
+
+    <main class="client-main">
+        <div class="client-container">
+            @RenderBody()
+        </div>
     </main>
 
-    <footer>
+    <footer class="client-footer">
         <div class="container">
-            &copy; @DateTime.Now.Year - Sistema de Citas - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+            &copy; @DateTime.Now.Year - Sistema de Citas - <a asp-controller="Home" asp-action="Privacy">Privacidad</a>
         </div>
     </footer>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

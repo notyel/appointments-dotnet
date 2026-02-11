@@ -4,17 +4,29 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Panel Administrativo</title>
+    <!-- Iconos del Layout Admin -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=dashboard,account_circle,business,list_alt,people,event_note,assessment,settings,home" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-portal.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="admin-layout">
     <header class="admin-header">
-        <div class="container">
-            <h1>?? Panel de Administración</h1>
-            <div class="user-info">
+        <div class="admin-header-content">
+            <a asp-controller="Admin" asp-action="Index" class="admin-logo">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Panel de Administración</span>
+            </a>
+            <div class="admin-user-info">
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <span>?? @User.Identity.Name</span>
-                    <a asp-controller="Account" asp-action="Logout" class="btn btn-sm">Cerrar Sesión</a>
+                    <div class="admin-user-name">
+                        <div class="admin-user-avatar">
+                            <span class="material-symbols-outlined">account_circle</span>
+                        </div>
+                        <span>@User.Identity.Name</span>
+                    </div>
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-sm btn-secondary">Cerrar Sesión</a>
                 }
             </div>
         </div>
@@ -23,29 +35,39 @@
     <div class="admin-container">
         <aside class="admin-sidebar">
             <nav class="admin-nav">
-                <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-item">
-                    ?? Mis Sucursales
+                <a asp-controller="Admin" asp-action="Index" class="admin-nav-item">
+                    <span class="admin-nav-item-icon material-symbols-outlined">business</span>
+                    <span>Mis Sucursales</span>
                 </a>
-                <a href="#" class="nav-item">
-                    ?? Servicios
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-item-icon material-symbols-outlined">list_alt</span>
+                    <span>Servicios</span>
                 </a>
-                <a href="#" class="nav-item">
-                    ?? Personal
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-item-icon material-symbols-outlined">people</span>
+                    <span>Personal</span>
                 </a>
-                <a href="#" class="nav-item">
-                    ?? Reportes
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-item-icon material-symbols-outlined">event_note</span>
+                    <span>Citas</span>
                 </a>
-                <a href="#" class="nav-item">
-                    ?? Configuración
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-item-icon material-symbols-outlined">assessment</span>
+                    <span>Reportes</span>
                 </a>
-                <hr />
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-item nav-item-secondary">
-                    ?? Ir al sitio público
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-item-icon material-symbols-outlined">settings</span>
+                    <span>Configuración</span>
+                </a>
+                <hr class="admin-nav-divider" />
+                <a asp-controller="Home" asp-action="Index" class="admin-nav-item admin-nav-item-secondary">
+                    <span class="admin-nav-item-icon material-symbols-outlined">home</span>
+                    <span>Ir al sitio público</span>
                 </a>
             </nav>
         </aside>
         
-        <main role="main" class="admin-main">
+        <main class="admin-main">
             @RenderBody()
         </main>
     </div>

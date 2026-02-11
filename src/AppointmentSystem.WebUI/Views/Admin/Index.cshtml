@@ -3,24 +3,104 @@
     ViewData["Title"] = "Panel de Administración";
 }
 
-<h2>Administración del Negocio</h2>
-<p>Seleccione una sucursal para gestionar su agenda y configuración:</p>
+@section Styles {
+    <!-- Iconos adicionales para esta vista -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=location_on,phone" rel="stylesheet" />
+}
 
-<div class="grid">
+<div class="page-header">
+    <h1 class="page-title">
+        <span class="material-symbols-outlined" style="vertical-align: middle;">business</span>
+        Mis Sucursales
+    </h1>
+    <p class="page-subtitle">Seleccione una sucursal para gestionar su agenda y configuración</p>
+</div>
+
+<div class="admin-items-grid">
     @foreach (var branch in Model)
     {
-        <div class="card">
-            <h3>@branch.Name</h3>
-            <p>@branch.Address</p>
-            <a asp-action="Dashboard" asp-route-branchId="@branch.Id" class="btn btn-primary">Gestionar Sucursal</a>
+        <div class="admin-item-card">
+            <div class="admin-item-card-header">
+                <h3 class="admin-item-card-title">@branch.Name</h3>
+                <span class="badge badge-primary">Activa</span>
+            </div>
+            <div class="admin-item-card-body">
+                <p class="admin-item-card-text">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1rem;">location_on</span>
+                    <strong>Dirección:</strong><br />
+                    @branch.Address
+                </p>
+                <p class="admin-item-card-text">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1rem;">phone</span>
+                    <strong>Teléfono:</strong><br />
+                    @branch.Phone
+                </p>
+            </div>
+            <div class="admin-item-card-footer">
+                <a asp-action="Dashboard" asp-route-branchId="@branch.Id" class="btn btn-primary btn-block">
+                    Gestionar Sucursal
+                </a>
+            </div>
         </div>
     }
 </div>
 
-<div style="margin-top: 2rem; padding: 1rem; border: 1px dashed #ccc;">
-    <h3>Gestión Global</h3>
-    <p>Acciones para todo el negocio:</p>
-    <a href="#" class="btn btn-secondary">Configuración General</a>
-    <a href="#" class="btn btn-secondary">Listado de Servicios</a>
-    <a href="#" class="btn btn-secondary">Reportes Globales</a>
+<div class="panel-card" style="margin-top: var(--spacing-2xl);">
+<div class="panel-card-header">
+    <h2 class="panel-card-title">
+        <span class="material-symbols-outlined" style="vertical-align: middle;">settings</span>
+        Gestión Global
+    </h2>
+</div>
+<div class="panel-card-body">
+    <p style="color: var(--color-text-light); margin-bottom: var(--spacing-lg);">
+        Acciones y configuraciones que aplican a todo el negocio
+    </p>
+    <div class="admin-items-grid">
+        <div class="admin-item-card">
+            <div class="admin-item-card-header">
+                <h3 class="admin-item-card-title">
+                    <span class="material-symbols-outlined" style="vertical-align: middle;">settings</span>
+                    Configuración
+                </h3>
+            </div>
+            <div class="admin-item-card-body">
+                <p class="admin-item-card-text">Ajustes generales del sistema</p>
+            </div>
+            <div class="admin-item-card-footer">
+                <a href="#" class="btn btn-sm btn-secondary">Acceder</a>
+            </div>
+        </div>
+            
+        <div class="admin-item-card">
+            <div class="admin-item-card-header">
+                <h3 class="admin-item-card-title">
+                    <span class="material-symbols-outlined" style="vertical-align: middle;">list_alt</span>
+                    Servicios
+                </h3>
+            </div>
+            <div class="admin-item-card-body">
+                <p class="admin-item-card-text">Catálogo de servicios disponibles</p>
+            </div>
+            <div class="admin-item-card-footer">
+                <a href="#" class="btn btn-sm btn-secondary">Acceder</a>
+            </div>
+        </div>
+            
+        <div class="admin-item-card">
+            <div class="admin-item-card-header">
+                <h3 class="admin-item-card-title">
+                    <span class="material-symbols-outlined" style="vertical-align: middle;">assessment</span>
+                    Reportes
+                </h3>
+            </div>
+            <div class="admin-item-card-body">
+                <p class="admin-item-card-text">Estadísticas y reportes globales</p>
+            </div>
+            <div class="admin-item-card-footer">
+                    <a href="#" class="btn btn-sm btn-secondary">Acceder</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

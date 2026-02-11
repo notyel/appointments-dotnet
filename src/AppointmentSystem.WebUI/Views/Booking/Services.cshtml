@@ -1,28 +1,58 @@
 @model IEnumerable<AppointmentSystem.Application.DTOs.ServiceDto>
 @{
-    ViewData["Title"] = "Servicios en " + ViewBag.BranchName;
+    ViewData["Title"] = "Seleccione un Servicio";
+    ViewBag.CurrentStep = 2;
 }
 
-<h2>Servicios Disponibles</h2>
-<p>Sucursal: @ViewBag.BranchName</p>
+@section Styles {
+    <!-- Iconos adicionales para esta vista -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=schedule,local_offer,arrow_back" rel="stylesheet" />
+}
 
-<div class="grid">
-    @foreach (var service in Model)
-    {
-        <div class="card">
-            <h3>@service.Name</h3>
-            <p>@service.Description</p>
-            <p><strong>Duración:</strong> @service.DurationMinutes min</p>
-            <p><strong>Precio:</strong> $@service.Price</p>
-            <p>Categoría: @service.Category</p>
-            <a asp-controller="Booking" asp-action="Professionals"
-               asp-route-branchId="@ViewBag.BranchId"
-               asp-route-branchServiceId="@service.Id"
-               class="btn btn-primary">Seleccionar Especialista</a>
-        </div>
-    }
+<partial name="_BookingStepper" />
+
+<div class="step-content-card">
+    <h1 class="step-title">Servicios Disponibles</h1>
+    <p class="step-description">Sucursal: <strong>@ViewBag.BranchName</strong></p>
+
+    <div class="options-grid">
+        @foreach (var service in Model)
+        {
+            <div class="option-card">
+                <div class="option-card-header">
+                    <h3 class="option-card-title">@service.Name</h3>
+                    <span class="option-card-badge">$@service.Price</span>
+                </div>
+                <div class="option-card-body">
+                    <p class="option-card-text">@service.Description</p>
+                    <div class="option-card-meta">
+                        <div class="option-card-meta-item">
+                            <span class="material-symbols-outlined option-card-meta-icon">schedule</span>
+                            <span>@service.DurationMinutes min</span>
+                        </div>
+                        <div class="option-card-meta-item">
+                            <span class="material-symbols-outlined option-card-meta-icon">local_offer</span>
+                            <span>@service.Category</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="option-card-footer">
+                    <a asp-controller="Booking" asp-action="Professionals"
+                       asp-route-branchId="@ViewBag.BranchId"
+                       asp-route-branchServiceId="@service.Id"
+                       class="btn btn-primary btn-block">
+                        Seleccionar Servicio
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
-<div style="margin-top: 2rem;">
-    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver a Sucursales</a>
+<div class="step-navigation">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver a Sucursales</span>
+    </a>
+    <div></div>
 </div>
