@@ -9,11 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=schedule,local_offer,arrow_back" rel="stylesheet" />
 }
 
-<partial name="_BookingStepper" />
+<div class="content">
+    <partial name="_BookingStepper" />
+</div>
 
-<div class="step-content-card">
-    <h1 class="step-title">Servicios Disponibles</h1>
-    <p class="step-description">Sucursal: <strong>@ViewBag.BranchName</strong></p>
+<div class="content">
+    <div class="step-header">
+        <h1 class="step-title">Servicios Disponibles</h1>
+        <p class="step-description">Sucursal: <strong>@ViewBag.BranchName</strong></p>
+    </div>
 
     <div class="options-grid">
         @foreach (var service in Model)
@@ -47,12 +51,12 @@
             </div>
         }
     </div>
-</div>
 
-<div class="step-navigation">
+    <div class="step-navigation">
     <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
         <span class="material-symbols-outlined">arrow_back</span>
         <span>Volver a Sucursales</span>
     </a>
     <div></div>
+    </div>
 </div>

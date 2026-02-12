@@ -63,11 +63,11 @@
                     </div>
                 </div>
                 <div class="branch-actions">
-                    <button class="btn-view-map" onclick="alert('Funcionalidad de mapa próximamente')">
+                    <button class="btn btn-secondary btn-view-map" onclick="alert('Funcionalidad de mapa próximamente')">
                         <span class="material-symbols-outlined">map</span>
                         Ver Mapa
                     </button>
-                    <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@branch.Id" class="btn-select">
+                    <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@branch.Id" class="btn btn-primary btn-select">
                         Seleccionar
                     </a>
                 </div>
@@ -289,21 +289,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            background: white;
-            border-radius: 8px;
-            color: #666;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-view-map:hover {
-            border-color: #667eea;
-            color: #667eea;
-            background: #f8f9ff;
+            gap: var(--spacing-sm);
         }
 
         .btn-view-map .material-symbols-outlined {
@@ -312,22 +298,6 @@
 
         .btn-select {
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .btn-select:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            color: white;
         }
 
         /* No Results */

@@ -5,15 +5,18 @@
 }
 
 @section Styles {
-    <!-- Iconos adicionales para esta vista -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=arrow_back" rel="stylesheet" />
 }
 
-<partial name="_BookingStepper" />
+<div class="content">
+    <partial name="_BookingStepper" />
+</div>
 
-<div class="step-content-card">
-    <h1 class="step-title">Nuestros Especialistas</h1>
-    <p class="step-description">Elija el profesional que le atenderá</p>
+<div class="content">
+    <div class="step-header">
+        <h1 class="step-title">Nuestros Especialistas</h1>
+        <p class="step-description">Elija el profesional que le atenderá</p>
+    </div>
 
     <div class="professionals-grid">
         @foreach (var prof in Model)
@@ -34,12 +37,12 @@
             </div>
         }
     </div>
-</div>
 
-<div class="step-navigation">
-    <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@ViewBag.BranchId" class="btn btn-secondary">
-        <span class="material-symbols-outlined">arrow_back</span>
-        <span>Volver a Servicios</span>
-    </a>
-    <div></div>
+    <div class="step-navigation">
+        <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@ViewBag.BranchId" class="btn btn-secondary">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>Volver a Servicios</span>
+        </a>
+        <div></div>
+    </div>
 </div>
