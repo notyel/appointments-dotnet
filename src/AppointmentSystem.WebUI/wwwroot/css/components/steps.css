@@ -1,0 +1,172 @@
+/* ============================================
+   COMPONENTE: INDICADOR DE PROGRESO (STEPPER)
+   ============================================ */
+
+.booking-stepper {
+    padding: var(--spacing-xl) 0;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.stepper-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    counter-reset: step;
+}
+
+.stepper-container::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: calc(100% / (2 * var(--step-count, 5)));
+    right: calc(100% / (2 * var(--step-count, 5)));
+    height: 2px;
+    background-color: var(--color-border);
+    z-index: 0;
+}
+
+.stepper-progress {
+    position: absolute;
+    top: 20px;
+    left: calc(100% / (2 * var(--step-count, 5)));
+    height: 2px;
+    background-color: var(--color-primary);
+    z-index: 1;
+    transition: width var(--transition-slow);
+}
+
+.stepper-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+}
+
+.stepper-step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-sm);
+    transition: all var(--transition-base);
+}
+
+.stepper-step-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Estado: completado */
+.stepper-step.completed .stepper-step-number {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+.stepper-step.completed .stepper-step-number .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+.stepper-step.completed .stepper-step-label {
+    color: var(--color-primary);
+}
+
+/* Estado: activo */
+.stepper-step.active .stepper-step-number {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+    transform: scale(1.1);
+}
+
+.stepper-step.active .stepper-step-label {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* ============================================
+   ENCABEZADOS DE PASOS
+   ============================================ */
+
+.step-header {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.step-title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+}
+
+.step-description {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+}
+
+/* ============================================
+   NAVEGACIÓN ENTRE PASOS
+   ============================================ */
+
+.step-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl) 0;
+    margin-top: var(--spacing-2xl);
+}
+
+.step-navigation .btn {
+    min-width: 140px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .booking-stepper {
+        padding: var(--spacing-sm) 0;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .stepper-step-label {
+        font-size: 0.75rem;
+    }
+    
+    .stepper-step-number {
+        width: 32px;
+        height: 32px;
+        font-size: var(--font-size-sm);
+    }
+
+    .stepper-container::before,
+    .stepper-progress {
+        top: 16px;
+    }
+
+    .step-navigation {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .step-navigation .btn {
+        width: 100%;
+    }
+}

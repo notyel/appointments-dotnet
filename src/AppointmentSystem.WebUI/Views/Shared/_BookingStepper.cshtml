@@ -9,11 +9,11 @@
         new { Number = 5, Label = "Confirmación" }
     };
     
-    var progressPercentage = ((currentStep - 1) / (double)(steps.Length - 1)) * 100;
+    var progressPercentage = (currentStep - 1) * (100.0 / steps.Length);
 }
 
 <div class="booking-stepper">
-    <div class="stepper-container">
+    <div class="stepper-container" style="--step-count: @steps.Length;">
         <div class="stepper-progress" style="width: @progressPercentage%"></div>
         
         @foreach (var step in steps)
@@ -32,7 +32,7 @@
                 <div class="stepper-step-number">
                     @if (step.Number < currentStep)
                     {
-                        <span></span>
+                        <span class="material-symbols-outlined">check</span>
                     }
                     else
                     {

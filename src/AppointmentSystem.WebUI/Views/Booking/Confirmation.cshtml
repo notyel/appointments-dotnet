@@ -3,54 +3,49 @@
     ViewData["Title"] = "Cita Confirmada";
 }
 
-@section Styles {
-    <!-- Iconos adicionales para esta vista -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=check_circle,assignment,email,arrow_forward" rel="stylesheet" />
-}
-
 <div class="content">
-<div class="step-content-card" style="text-align: center; max-width: 600px; margin: 0 auto;">
-    <div style="margin-bottom: var(--spacing-lg);">
-        <span class="material-symbols-outlined" style="font-size: 5rem; color: var(--color-success);">check_circle</span>
-    </div>
-    
-    <h1 class="step-title" style="color: var(--color-success);">
-        ¡Cita Confirmada!
-    </h1>
-    
-    <p class="step-description">
-        Su cita ha sido reservada exitosamente
-    </p>
-
-    <div class="alert alert-success" style="text-align: left; margin: var(--spacing-xl) 0;">
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <span class="material-symbols-outlined">assignment</span>
-            <strong>Número de referencia:</strong>
+    <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <div style="margin-bottom: var(--spacing-lg);">
+            <span class="material-symbols-outlined" style="font-size: 5rem; color: var(--color-success);">check_circle</span>
         </div>
-        <code style="font-size: var(--font-size-lg); font-weight: 600; color: var(--color-success);">@Model</code>
-    </div>
+        
+        <h1 class="step-title" style="color: var(--color-success);">
+            ¡Cita Confirmada!
+        </h1>
+        
+        <p class="step-description">
+            Su cita ha sido reservada exitosamente
+        </p>
 
-    <p style="color: var(--color-text-light); margin-bottom: var(--spacing-xl);">
-        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.2rem;">email</span>
-        Hemos enviado un correo electrónico con los detalles de su reserva.<br />
-        Por favor, guarde su número de referencia para futuras consultas.
-    </p>
+        <div class="alert alert-success" style="text-align: left; margin: var(--spacing-xl) 0;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="material-symbols-outlined">assignment</span>
+                <strong>Número de referencia:</strong>
+            </div>
+            <code style="font-size: var(--font-size-lg); font-weight: 600; color: var(--color-success);">@Model</code>
+        </div>
 
-    <div class="step-navigation" style="justify-content: center;">
-        <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">
-            <span class="material-symbols-outlined">home</span>
-            <span>Volver al Inicio</span>
-        </a>
-    </div>
+        <p style="color: var(--color-text-light); margin-bottom: var(--spacing-xl);">
+            <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.2rem;">email</span>
+            Hemos enviado un correo electrónico con los detalles de su reserva.<br />
+            Por favor, guarde su número de referencia para futuras consultas.
+        </p>
 
-    @if (User.Identity?.IsAuthenticated == true)
-    {
-        <div style="margin-top: var(--spacing-lg);">
-            <a asp-controller="Appointments" asp-action="Index" class="btn btn-link">
-                Ver mis citas
-                <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1rem;">arrow_forward</span>
+        <div class="step-navigation" style="justify-content: center;">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">
+                <span class="material-symbols-outlined">home</span>
+                <span>Volver al Inicio</span>
             </a>
         </div>
-    }
-</div>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <div style="margin-top: var(--spacing-lg);">
+                <a asp-controller="Appointments" asp-action="Index" class="btn btn-link">
+                    Ver mis citas
+                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1rem;">arrow_forward</span>
+                </a>
+            </div>
+        }
+    </div>
 </div>

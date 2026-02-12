@@ -4,16 +4,13 @@
     ViewBag.CurrentStep = 5;
 }
 
-@section Styles {
-    <!-- Iconos adicionales para esta vista -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=assignment,arrow_back,check_circle" rel="stylesheet" />
-}
+<div class="content">
+    <partial name="_BookingStepper" />
 
-<partial name="_BookingStepper" />
-
-<div class="step-content-card">
-    <h1 class="step-title">Confirme su Cita</h1>
-    <p class="step-description">Complete sus datos para finalizar la reserva</p>
+    <div class="step-header">
+        <h1 class="step-title">Confirme su Cita</h1>
+        <p class="step-description">Complete sus datos para finalizar la reserva</p>
+    </div>
 
     <div class="selection-summary">
         <h3 class="selection-summary-title">
