@@ -23,7 +23,8 @@ public class BranchManagementService : IBranchManagementService
             Name = b.Name,
             Address = b.Address,
             Phone = b.Phone,
-            Email = b.Email
+            Email = b.Email,
+            ImageUrl = b.ImageUrl
         });
     }
 
@@ -37,7 +38,8 @@ public class BranchManagementService : IBranchManagementService
             Name = b.Name,
             Address = b.Address,
             Phone = b.Phone,
-            Email = b.Email
+            Email = b.Email,
+            ImageUrl = b.ImageUrl
         };
     }
 

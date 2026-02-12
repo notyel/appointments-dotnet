@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Identity;
 using AppointmentSystem.Infrastructure;
 using AppointmentSystem.Infrastructure.Persistence;
 using AppointmentSystem.Application;
+using AppointmentSystem.WebUI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configure AppConfig
+builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
 
 // Add layers
 builder.Services.AddInfrastructure(builder.Configuration);

@@ -14,48 +14,49 @@
     <header class="client-header">
         <div class="client-header-content">
             <a asp-controller="Home" asp-action="Index" class="client-logo">
-               <span class="material-symbols-outlined">
-spa
-</span>
+                <span class="material-symbols-outlined">spa</span>
                 <span>Sistema de Citas</span>
             </a>
             <nav class="client-nav">
                 <a asp-controller="Home" asp-action="Index">
-                   <span class="material-symbols-outlined">home</span>
-                    <span>Inicio</span>
+                    <span>Nuestros Servicios</span>
                 </a>
-                @if (User.Identity?.IsAuthenticated == true)
-                {
-                    <a asp-controller="Appointments" asp-action="Index">
-                        <span class="material-symbols-outlined">event</span>
-                        <span>Mis Citas</span>
-                    </a>
-                }
+                <a asp-controller="Home" asp-action="About">
+                    <span>Nosotros</span>
+                </a>
+                <a asp-controller="Home" asp-action="Contact">
+                    <span>Contacto</span>
+                </a>
             </nav>
             <div class="client-user-info">
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <span class="material-symbols-outlined">account_circle</span>
-                    <span>@User.Identity.Name</span>
+                    <a asp-controller="Appointments" asp-action="Index" class="nav-link-minimal">
+                        <span class="material-symbols-outlined">event</span>
+                        <span>Mis Citas</span>
+                    </a>
+                    <span class="user-name">
+                        <span class="material-symbols-outlined">account_circle</span>
+                        <span>@User.Identity.Name</span>
+                    </span>
                     <a asp-controller="Account" asp-action="Logout" class="btn btn-sm btn-secondary">Cerrar Sesión</a>
                 }
                 else
                 {
-                    <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-primary">Iniciar Sesión</a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-login">Acceso Administrativo</a>
                 }
             </div>
         </div>
     </header>
 
     <main class="client-main">
-        <div class="client-container">
-            @RenderBody()
-        </div>
+        @RenderBody()
     </main>
 
     <footer class="client-footer">
-        <div class="container">
-            &copy; @DateTime.Now.Year - Sistema de Citas - <a asp-controller="Home" asp-action="Privacy">Privacidad</a>
+        <div class="client-footer-content">
+            <p>&copy; @DateTime.Now.Year - Sistema de Citas</p>
+            <a asp-controller="Home" asp-action="Privacy">Política de Privacidad</a>
         </div>
     </footer>
 

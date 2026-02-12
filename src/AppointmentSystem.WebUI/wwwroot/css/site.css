@@ -75,6 +75,14 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Clase global para contenedor de contenido */
+.content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
 /* ============================================
    FORMULARIOS
    ============================================ */

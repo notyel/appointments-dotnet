@@ -38,6 +38,7 @@ public static class DbInitializer
             Address = "Av. Principal 123",
             Phone = "555-0101",
             Email = "central@bellezatotal.com",
+            ImageUrl = "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop",
             SimultaneousCapacity = 2
         };
 
@@ -50,6 +51,7 @@ public static class DbInitializer
             Address = "Calle Norte 456",
             Phone = "555-0202",
             Email = "norte@bellezatotal.com",
+            ImageUrl = "https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=800&h=600&fit=crop",
             SimultaneousCapacity = 1
         };
         context.Branches.AddRange(branch1, branch2);

@@ -10,9 +10,10 @@ public class Branch : BaseEntity
     public string Address { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public string ImageUrl { get; set; } = string.Empty;
     public string TimeZone { get; set; } = "UTC";
     public bool IsActive { get; set; } = true;
-    public int SimultaneousCapacity { get; set; } = 10; // Default
+    public int SimultaneousCapacity { get; set; } = 10;
 
     public ICollection<BranchSchedule> Schedules { get; set; } = new List<BranchSchedule>();
     public ICollection<BranchHoliday> Holidays { get; set; } = new List<BranchHoliday>();
