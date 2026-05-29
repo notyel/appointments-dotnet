@@ -10,6 +10,9 @@ public class Professional : BaseEntity
     public string Phone { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
     public string? ImageUrl { get; set; }
+    public string? Specialty { get; set; }
+    public string? Description { get; set; }
+    public decimal? Rating { get; set; }
 
     public Guid BranchId { get; set; }
     public Branch Branch { get; set; } = null!;

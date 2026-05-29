@@ -1,0 +1,86 @@
+<div class="booking-summary-panel">
+
+    <div class="booking-summary-header">
+        <h3>Resumen de tu reserva</h3>
+    </div>
+
+    @{
+        bool hasService = !string.IsNullOrEmpty(ViewBag.ServiceName as string);
+        bool hasProfessional = !string.IsNullOrEmpty(ViewBag.ProfessionalName as string);
+        bool hasDate = ViewBag.SelectedDate is DateTime sd && sd != default;
+        decimal? price = ViewBag.ServicePrice as decimal?;
+        int? duration = ViewBag.ServiceDuration as int?;
+    }
+
+    @if (hasService || hasProfessional)
+    {
+        <div class="summary-service-block">
+            @if (!string.IsNullOrEmpty(ViewBag.ServiceImageUrl as string))
+            {
+                <img src="@ViewBag.ServiceImageUrl" alt="@ViewBag.ServiceName" class="summary-service-thumb" />
+            }
+            else
+            {
+                <div class="summary-service-thumb-placeholder"></div>
+            }
+            <div class="summary-service-info">
+                @if (hasService)
+                {
+                    <p class="summary-service-name">@ViewBag.ServiceName</p>
+                }
+                <p class="summary-service-sub">
+                    @if (duration != null) { <span>@duration min</span> }
+                </p>
+            </div>
+        </div>
+    }
+
+    <div class="booking-summary-body">
+        @if (hasProfessional)
+        {
+            <div class="summary-detail-row">
+                <span class="material-symbols-outlined summary-detail-icon">person</span>
+                <div class="summary-detail-info">
+                    <span class="summary-detail-label">Profesional</span>
+                    <span class="summary-detail-value">@ViewBag.ProfessionalName</span>
+                </div>
+            </div>
+        }
+        @if (hasDate)
+        {
+            var selectedDate = (DateTime)ViewBag.SelectedDate;
+            <div class="summary-detail-row">
+                <span class="material-symbols-outlined summary-detail-icon">calendar_today</span>
+                <div class="summary-detail-info">
+                    <span class="summary-detail-label">Fecha seleccionada</span>
+                    <span class="summary-detail-value">@selectedDate.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"))</span>
+                </div>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(ViewBag.BranchName as string))
+        {
+            <div class="summary-detail-row">
+                <span class="material-symbols-outlined summary-detail-icon">store</span>
+                <div class="summary-detail-info">
+                    <span class="summary-detail-label">Sucursal</span>
+                    <span class="summary-detail-value">@ViewBag.BranchName</span>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (price != null)
+    {
+        <div class="summary-total-row">
+            <span class="summary-total-label">Total</span>
+            <span class="summary-total-amount">$@price?.ToString("0.00")</span>
+        </div>
+    }
+
+    <div class="booking-summary-footer">
+        <p class="summary-hint">
+            <span class="material-symbols-outlined">info</span>
+            No se realizará ningún cobro todavía
+        </p>
+    </div>
+</div>

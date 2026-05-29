@@ -14,24 +14,57 @@
         <p class="step-description">Elija el profesional que le atenderá</p>
     </div>
 
-    <div class="professionals-grid">
-        @foreach (var prof in Model)
-        {
-            <div class="professional-card">
-                <div class="professional-avatar">
-                    @prof.FullName.Substring(0, 1).ToUpper()
-                </div>
-                <h3 class="professional-name">@prof.FullName</h3>
-                <p class="professional-email">@prof.Email</p>
-                <a asp-controller="Booking" asp-action="Slots"
-                   asp-route-branchId="@ViewBag.BranchId"
-                   asp-route-branchServiceId="@ViewBag.BranchServiceId"
-                   asp-route-professionalId="@prof.Id"
-                   class="btn btn-primary btn-block">
-                    Ver Disponibilidad
-                </a>
+    <div class="booking-two-col">
+        <div class="booking-main-col">
+            <div class="professionals-grid">
+                @foreach (var prof in Model)
+                {
+                    <div class="professional-card">
+                        <div class="professional-card-media">
+                            @if (!string.IsNullOrEmpty(prof.ImageUrl))
+                            {
+                                <img src="@prof.ImageUrl" alt="@prof.FullName"
+                                     class="professional-photo"
+                                     onerror="this.parentElement.classList.add('professional-card-media--placeholder'); this.remove()" />
+                            }
+                            else
+                            {
+                                <div class="professional-card-media professional-card-media--placeholder"></div>
+                            }
+                        </div>
+                        <div class="professional-card-body">
+                            <div class="professional-card-header-row">
+                                <h3 class="professional-name">@prof.FullName</h3>
+                                <span class="professional-rating">
+                                    <span class="material-symbols-outlined rating-star">star</span>
+                                    @(prof.Rating.HasValue ? prof.Rating.Value.ToString("0.0") : "—")
+                                </span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(prof.Specialty))
+                            {
+                                <p class="professional-specialty">@prof.Specialty</p>
+                            }
+                            @if (!string.IsNullOrEmpty(prof.Description))
+                            {
+                                <p class="professional-description">@prof.Description</p>
+                            }
+                            <a asp-controller="Booking" asp-action="Slots"
+                               asp-route-branchId="@ViewBag.BranchId"
+                               asp-route-branchServiceId="@ViewBag.BranchServiceId"
+                               asp-route-professionalId="@prof.Id"
+                               class="btn btn-primary btn-block">
+                                <span class="material-symbols-outlined">event_available</span>
+                                Ver Disponibilidad
+                            </a>
+                        </div>
+                    </div>
+                }
             </div>
-        }
+        </div>
+
+        <aside class="booking-summary-col">
+            <partial name="_BookingSummary" />
+        </aside>
     </div>
 
     <div class="step-navigation">

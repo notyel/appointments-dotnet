@@ -12,69 +12,63 @@
         <p class="step-description">Complete sus datos para finalizar la reserva</p>
     </div>
 
-    <div class="selection-summary">
-        <h3 class="selection-summary-title">
-            <span class="material-symbols-outlined" style="vertical-align: middle;">assignment</span>
-            Resumen de su cita
-        </h3>
-        <div class="selection-summary-item">
-            <span class="selection-summary-label">
-                <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle;">event</span>
-                Fecha y Hora:
-            </span>
-            <span class="selection-summary-value">@Model.StartTime.ToString("dddd, dd 'de' MMMM 'de' yyyy 'a las' HH:mm", new System.Globalization.CultureInfo("es-ES"))</span>
+    <div class="booking-two-col">
+        <div class="booking-main-col">
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="BranchId" />
+                <input type="hidden" asp-for="BranchServiceId" />
+                <input type="hidden" asp-for="ProfessionalId" />
+                <input type="hidden" asp-for="StartTime" />
+
+                <div class="form-group">
+                    <label asp-for="ClientFirstName" class="form-label required">Nombre</label>
+                    <input asp-for="ClientFirstName" required />
+                    <span asp-validation-for="ClientFirstName" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ClientLastName" class="form-label required">Apellido</label>
+                    <input asp-for="ClientLastName" required />
+                    <span asp-validation-for="ClientLastName" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ClientEmail" class="form-label required">Correo Electrónico</label>
+                    <input asp-for="ClientEmail" type="email" required />
+                    <span asp-validation-for="ClientEmail" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ClientPhone" class="form-label required">Teléfono</label>
+                    <input asp-for="ClientPhone" required />
+                    <span asp-validation-for="ClientPhone" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Notes" class="form-label">Notas adicionales</label>
+                    <textarea asp-for="Notes" placeholder="Si tiene alguna preferencia o requerimiento especial, puede indicarlo aquí..."></textarea>
+                    <span asp-validation-for="Notes" class="error-message"></span>
+                </div>
+
+                <div class="step-navigation">
+                    <a href="javascript:history.back()" class="btn btn-secondary">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span>Volver</span>
+                    </a>
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span>Confirmar Reserva</span>
+                    </button>
+                </div>
+            </form>
         </div>
+
+        <aside class="booking-summary-col">
+            <partial name="_BookingSummary" />
+        </aside>
     </div>
-
-    <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
-
-    <form asp-action="Create" method="post">
-        <input type="hidden" asp-for="BranchId" />
-        <input type="hidden" asp-for="BranchServiceId" />
-        <input type="hidden" asp-for="ProfessionalId" />
-        <input type="hidden" asp-for="StartTime" />
-
-        <div class="form-group">
-            <label asp-for="ClientFirstName" class="form-label required">Nombre</label>
-            <input asp-for="ClientFirstName" required />
-            <span asp-validation-for="ClientFirstName" class="error-message"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="ClientLastName" class="form-label required">Apellido</label>
-            <input asp-for="ClientLastName" required />
-            <span asp-validation-for="ClientLastName" class="error-message"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="ClientEmail" class="form-label required">Correo Electrónico</label>
-            <input asp-for="ClientEmail" type="email" required />
-            <span asp-validation-for="ClientEmail" class="error-message"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="ClientPhone" class="form-label required">Teléfono</label>
-            <input asp-for="ClientPhone" required />
-            <span asp-validation-for="ClientPhone" class="error-message"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Notes" class="form-label">Notas adicionales</label>
-            <textarea asp-for="Notes" placeholder="Si tiene alguna preferencia o requerimiento especial, puede indicarlo aquí..."></textarea>
-            <span asp-validation-for="Notes" class="error-message"></span>
-        </div>
-
-        <div class="step-navigation">
-            <a href="javascript:history.back()" class="btn btn-secondary">
-                <span class="material-symbols-outlined">arrow_back</span>
-                <span>Volver</span>
-            </a>
-            <button type="submit" class="btn btn-success btn-lg">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Confirmar Reserva</span>
-            </button>
-        </div>
-    </form>
 </div>
 
 @section Scripts {

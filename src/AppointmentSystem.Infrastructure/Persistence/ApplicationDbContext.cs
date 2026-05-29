@@ -25,6 +25,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<BranchHoliday> BranchHolidays => Set<BranchHoliday>();
     public DbSet<ProfessionalAbsence> ProfessionalAbsences => Set<ProfessionalAbsence>();
     public DbSet<Notification> Notifications => Set<Notification>();
+    public DbSet<Category> Categories => Set<Category>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -39,6 +40,7 @@ public class ApplicationDbContext : IdentityDbContext
         builder.Entity<ProfessionalService>().HasQueryFilter(x => !x.IsDeleted);
         builder.Entity<Client>().HasQueryFilter(x => !x.IsDeleted);
         builder.Entity<Appointment>().HasQueryFilter(x => !x.IsDeleted);
+        builder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
 
         // Relationships and constraints
         builder.Entity<BranchService>()
@@ -60,6 +62,13 @@ public class ApplicationDbContext : IdentityDbContext
             .HasOne(ps => ps.BranchService)
             .WithMany(bs => bs.ProfessionalServices)
             .HasForeignKey(ps => ps.BranchServiceId);
+
+        builder.Entity<Service>()
+            .HasOne(s => s.CategoryEntity)
+            .WithMany(c => c.Services)
+            .HasForeignKey(s => s.CategoryId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

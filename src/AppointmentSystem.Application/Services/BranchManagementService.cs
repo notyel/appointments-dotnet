@@ -1,6 +1,7 @@
 using AppointmentSystem.Application.DTOs;
 using AppointmentSystem.Application.Interfaces;
 using AppointmentSystem.Domain.Entities;
+using AppointmentSystem.Domain.Extensions;
 using AppointmentSystem.Domain.Interfaces;
 
 namespace AppointmentSystem.Application.Services;
@@ -53,9 +54,10 @@ public class BranchManagementService : IBranchManagementService
             Id = bs.Id,
             Name = bs.Service.Name,
             Description = bs.Service.Description,
-            Category = bs.Service.Category.ToString(),
+            Category = bs.Service.Category.ToSpanish(),
             DurationMinutes = bs.DurationMinutes,
-            Price = bs.Price
+            Price = bs.Price,
+            ImageUrl = bs.Service.ImageUrl
         });
     }
 
@@ -68,7 +70,11 @@ public class BranchManagementService : IBranchManagementService
         {
             Id = ps.Professional.Id,
             FullName = $"{ps.Professional.FirstName} {ps.Professional.LastName}",
-            Email = ps.Professional.Email
+            Email = ps.Professional.Email,
+            ImageUrl = ps.Professional.ImageUrl,
+            Specialty = ps.Professional.Specialty,
+            Description = ps.Professional.Description,
+            Rating = ps.Professional.Rating
         });
     }
 

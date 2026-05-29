@@ -5,8 +5,7 @@
 }
 
 @section Styles {
-    <!-- Iconos adicionales para esta vista -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=schedule,local_offer,arrow_back" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=schedule,local_offer,arrow_back,spa,check_circle" rel="stylesheet" />
 }
 
 <div class="content">
@@ -16,47 +15,67 @@
 <div class="content">
     <div class="step-header">
         <h1 class="step-title">Servicios Disponibles</h1>
-        <p class="step-description">Sucursal: <strong>@ViewBag.BranchName</strong></p>
+        <p class="step-description">Elige el servicio que deseas reservar</p>
     </div>
 
-    <div class="options-grid">
-        @foreach (var service in Model)
-        {
-            <div class="option-card">
-                <div class="option-card-header">
-                    <h3 class="option-card-title">@service.Name</h3>
-                    <span class="option-card-badge">$@service.Price</span>
-                </div>
-                <div class="option-card-body">
-                    <p class="option-card-text">@service.Description</p>
-                    <div class="option-card-meta">
-                        <div class="option-card-meta-item">
-                            <span class="material-symbols-outlined option-card-meta-icon">schedule</span>
-                            <span>@service.DurationMinutes min</span>
-                        </div>
-                        <div class="option-card-meta-item">
-                            <span class="material-symbols-outlined option-card-meta-icon">local_offer</span>
-                            <span>@service.Category</span>
+    <div class="booking-two-col">
+        <div class="booking-main-col">
+            <div class="options-grid">
+                @foreach (var service in Model)
+                {
+                    <div class="option-card">
+                        @if (!string.IsNullOrEmpty(service.ImageUrl))
+                        {
+                            <div class="option-card-image">
+                                <img src="@service.ImageUrl" alt="@service.Name" onerror="this.parentElement.classList.add('option-card-image-placeholder')" />
+                                <span class="option-card-price-badge">$@service.Price</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="option-card-image option-card-image-placeholder">
+                                <span class="option-card-price-badge">$@service.Price</span>
+                            </div>
+                        }
+                        <div class="option-card-content">
+                            <div class="option-card-header">
+                                <h3 class="option-card-title">@service.Name</h3>
+                                <span class="option-card-category">@service.Category</span>
+                            </div>
+                            <div class="option-card-body">
+                                <p class="option-card-text">@service.Description</p>
+                                <div class="option-card-meta">
+                                    <div class="option-card-meta-item">
+                                        <span class="material-symbols-outlined option-card-meta-icon">schedule</span>
+                                        <span>@service.DurationMinutes min</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="option-card-footer">
+                                <a asp-controller="Booking" asp-action="Professionals"
+                                   asp-route-branchId="@ViewBag.BranchId"
+                                   asp-route-branchServiceId="@service.Id"
+                                   class="btn btn-primary btn-block">
+                                    <span class="material-symbols-outlined">check_circle</span>
+                                    Seleccionar
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="option-card-footer">
-                    <a asp-controller="Booking" asp-action="Professionals"
-                       asp-route-branchId="@ViewBag.BranchId"
-                       asp-route-branchServiceId="@service.Id"
-                       class="btn btn-primary btn-block">
-                        Seleccionar Servicio
-                    </a>
-                </div>
+                }
             </div>
-        }
+        </div>
+
+        <aside class="booking-summary-col">
+            <partial name="_BookingSummary" />
+        </aside>
     </div>
 
     <div class="step-navigation">
-    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
-        <span class="material-symbols-outlined">arrow_back</span>
-        <span>Volver a Sucursales</span>
-    </a>
-    <div></div>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>Volver a Sucursales</span>
+        </a>
+        <div></div>
     </div>
 </div>

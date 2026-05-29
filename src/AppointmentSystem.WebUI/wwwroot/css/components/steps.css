@@ -3,8 +3,9 @@
    ============================================ */
 
 .booking-stepper {
-    padding: var(--spacing-xl) 0;
-    margin-bottom: var(--spacing-2xl);
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border-light);
 }
 
 .stepper-container {
@@ -102,21 +103,23 @@
    ============================================ */
 
 .step-header {
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
+    margin-bottom: var(--spacing-md);
+    text-align: left;
 }
 
 .step-title {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 2px;
+    line-height: 1.2;
 }
 
 .step-description {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
     margin-bottom: 0;
+    line-height: 1.4;
 }
 
 /* ============================================

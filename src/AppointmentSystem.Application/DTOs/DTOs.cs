@@ -18,6 +18,7 @@ public class ServiceDto
     public string Category { get; set; } = string.Empty;
     public int DurationMinutes { get; set; }
     public decimal Price { get; set; }
+    public string? ImageUrl { get; set; }
 }
 
 public class ProfessionalDto
@@ -25,6 +26,10 @@ public class ProfessionalDto
     public Guid Id { get; set; }
     public string FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
+    public string? Specialty { get; set; }
+    public string? Description { get; set; }
+    public decimal? Rating { get; set; }
 }
 
 public class AppointmentDto

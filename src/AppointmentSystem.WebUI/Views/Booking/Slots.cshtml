@@ -6,7 +6,7 @@
 }
 
 @section Styles {
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=warning,arrow_back" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=warning,arrow_back,calendar_today" rel="stylesheet" />
 }
 
 <div class="content">
@@ -19,52 +19,63 @@
         <p class="step-description">Seleccione la fecha y hora de su preferencia</p>
     </div>
 
-    <div class="date-selector">
-        <form method="get" asp-action="Slots">
-            <input type="hidden" name="branchId" value="@ViewBag.BranchId" />
-            <input type="hidden" name="branchServiceId" value="@ViewBag.BranchServiceId" />
-            <input type="hidden" name="professionalId" value="@ViewBag.ProfessionalId" />
-            <div class="form-group">
-                <label class="form-label">Seleccionar Fecha:</label>
-                <input type="date" 
-                       name="date" 
-                       value="@selectedDate.ToString("yyyy-MM-dd")" 
-                       onchange="this.form.submit()" 
-                       min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+    <div class="booking-two-col">
+        <div class="booking-main-col">
+            <div class="date-selector">
+                <form method="get" asp-action="Slots">
+                    <input type="hidden" name="branchId" value="@ViewBag.BranchId" />
+                    <input type="hidden" name="branchServiceId" value="@ViewBag.BranchServiceId" />
+                    <input type="hidden" name="professionalId" value="@ViewBag.ProfessionalId" />
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="material-symbols-outlined" style="vertical-align:middle;font-size:1rem;">calendar_today</span>
+                            Seleccionar Fecha:
+                        </label>
+                        <input type="date"
+                               name="date"
+                               value="@selectedDate.ToString("yyyy-MM-dd")"
+                               onchange="this.form.submit()"
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
 
-    <h3 style="margin-bottom: var(--spacing-lg); color: var(--color-text);">
-        Horarios disponibles para @selectedDate.ToString("dd/MM/yyyy")
-    </h3>
+            <h3 style="margin-bottom: var(--spacing-lg); color: var(--color-text);">
+                Horarios disponibles para @selectedDate.ToString("dd/MM/yyyy")
+            </h3>
 
-    @if (!Model.Any())
-    {
-        <div class="alert alert-warning">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span class="material-symbols-outlined">warning</span>
-                <strong>No hay turnos disponibles</strong>
-            </div>
-            <p style="margin: 0.5rem 0 0 0;">No hay horarios disponibles para esta fecha. Por favor, seleccione otra fecha.</p>
-        </div>
-    }
-    else
-    {
-        <div class="time-slots-grid">
-            @foreach (var slot in Model)
+            @if (!Model.Any())
             {
-                <a asp-controller="Booking" asp-action="Create"
-                   asp-route-branchId="@ViewBag.BranchId"
-                   asp-route-branchServiceId="@ViewBag.BranchServiceId"
-                   asp-route-professionalId="@ViewBag.ProfessionalId"
-                   asp-route-startTime="@slot.ToString("yyyy-MM-ddTHH:mm:ss")"
-                   class="time-slot">
-                    @slot.ToString("HH:mm")
-                </a>
+                <div class="alert alert-warning">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="material-symbols-outlined">warning</span>
+                        <strong>No hay turnos disponibles</strong>
+                    </div>
+                    <p style="margin: 0.5rem 0 0 0;">No hay horarios disponibles para esta fecha. Por favor, seleccione otra fecha.</p>
+                </div>
+            }
+            else
+            {
+                <div class="time-slots-grid">
+                    @foreach (var slot in Model)
+                    {
+                        <a asp-controller="Booking" asp-action="Create"
+                           asp-route-branchId="@ViewBag.BranchId"
+                           asp-route-branchServiceId="@ViewBag.BranchServiceId"
+                           asp-route-professionalId="@ViewBag.ProfessionalId"
+                           asp-route-startTime="@slot.ToString("yyyy-MM-ddTHH:mm:ss")"
+                           class="time-slot">
+                            @slot.ToString("HH:mm")
+                        </a>
+                    }
+                </div>
             }
         </div>
-    }
+
+        <aside class="booking-summary-col">
+            <partial name="_BookingSummary" />
+        </aside>
+    </div>
 
     <div class="step-navigation">
         <a asp-controller="Booking" asp-action="Professionals"

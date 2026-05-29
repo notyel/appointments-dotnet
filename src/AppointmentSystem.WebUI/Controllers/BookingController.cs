@@ -31,6 +31,18 @@ public class BookingController : Controller
         var professionals = await _branchService.GetProfessionalsByServiceAsync(branchServiceId);
         ViewBag.BranchId = branchId;
         ViewBag.BranchServiceId = branchServiceId;
+
+        var branch = await _branchService.GetBranchByIdAsync(branchId);
+        var services = await _branchService.GetServicesByBranchAsync(branchId);
+        var selectedService = services.FirstOrDefault(s => s.Id == branchServiceId);
+
+        ViewBag.BranchName = branch?.Name;
+        ViewBag.BranchImageUrl = branch?.ImageUrl;
+        ViewBag.ServiceName = selectedService?.Name;
+        ViewBag.ServicePrice = selectedService?.Price;
+        ViewBag.ServiceDuration = selectedService?.DurationMinutes;
+        ViewBag.ServiceImageUrl = selectedService?.ImageUrl;
+
         return View(professionals);
     }
 
@@ -41,16 +53,31 @@ public class BookingController : Controller
 
         var slots = await _branchService.GetAvailableSlotsAsync(branchServiceId, professionalId, selectedDate);
 
+        var branch = await _branchService.GetBranchByIdAsync(branchId);
+        var services = await _branchService.GetServicesByBranchAsync(branchId);
+        var selectedService = services.FirstOrDefault(s => s.Id == branchServiceId);
+        var professionals = await _branchService.GetProfessionalsByServiceAsync(branchServiceId);
+        var selectedProfessional = professionals.FirstOrDefault(p => p.Id == professionalId);
+
         ViewBag.BranchId = branchId;
         ViewBag.BranchServiceId = branchServiceId;
         ViewBag.ProfessionalId = professionalId;
         ViewBag.SelectedDate = selectedDate;
 
+        ViewBag.BranchName = branch?.Name;
+        ViewBag.BranchImageUrl = branch?.ImageUrl;
+        ViewBag.ServiceName = selectedService?.Name;
+        ViewBag.ServicePrice = selectedService?.Price;
+        ViewBag.ServiceDuration = selectedService?.DurationMinutes;
+        ViewBag.ServiceImageUrl = selectedService?.ImageUrl;
+        ViewBag.ProfessionalName = selectedProfessional?.FullName;
+        ViewBag.ProfessionalImageUrl = selectedProfessional?.ImageUrl;
+
         return View(slots);
     }
 
     [HttpGet]
-    public IActionResult Create(Guid branchId, Guid branchServiceId, Guid professionalId, DateTime startTime)
+    public async Task<IActionResult> Create(Guid branchId, Guid branchServiceId, Guid professionalId, DateTime startTime)
     {
         var dto = new CreateAppointmentDto
         {
@@ -59,6 +86,23 @@ public class BookingController : Controller
             ProfessionalId = professionalId,
             StartTime = startTime
         };
+
+        var branch = await _branchService.GetBranchByIdAsync(branchId);
+        var services = await _branchService.GetServicesByBranchAsync(branchId);
+        var selectedService = services.FirstOrDefault(s => s.Id == branchServiceId);
+        var professionals = await _branchService.GetProfessionalsByServiceAsync(branchServiceId);
+        var selectedProfessional = professionals.FirstOrDefault(p => p.Id == professionalId);
+
+        ViewBag.BranchName = branch?.Name;
+        ViewBag.BranchImageUrl = branch?.ImageUrl;
+        ViewBag.ServiceName = selectedService?.Name;
+        ViewBag.ServicePrice = selectedService?.Price;
+        ViewBag.ServiceDuration = selectedService?.DurationMinutes;
+        ViewBag.ServiceImageUrl = selectedService?.ImageUrl;
+        ViewBag.ProfessionalName = selectedProfessional?.FullName;
+        ViewBag.ProfessionalImageUrl = selectedProfessional?.ImageUrl;
+        ViewBag.SelectedDate = startTime;
+
         return View(dto);
     }
 

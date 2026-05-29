@@ -25,9 +25,9 @@
 </div>
 
 <div class="content">
-    <div class="page-hero">
-        <h1 class="hero-title">Comienza Tu Experiencia</h1>
-        <p class="hero-subtitle">Selecciona tu santuario preferido para comenzar tu experiencia de bienestar curada</p>
+    <div class="step-header">
+        <h1 class="step-title">Selecciona tu Sucursal</h1>
+        <p class="step-description">Elige el centro más cercano para comenzar tu experiencia de bienestar</p>
     </div>
 
     <div class="search-section">
@@ -45,30 +45,46 @@
         @foreach (var branch in Model)
         {
             <div class="branch-card" data-branch-name="@branch.Name.ToLower()" data-branch-address="@branch.Address.ToLower()">
-                <div class="branch-image-wrapper">
-                    <img src="@(!string.IsNullOrEmpty(branch.ImageUrl) ? branch.ImageUrl : "/images/branch-default.jpg")" 
-                         alt="@branch.Name" 
-                         class="branch-image"
+                <div class="branch-card-hero">
+                    <img src="@(!string.IsNullOrEmpty(branch.ImageUrl) ? branch.ImageUrl : "/images/branch-default.jpg")"
+                         alt="@branch.Name"
+                         class="branch-card-hero-img"
                          onerror="this.src='/images/branch-default.jpg'" />
+                    <div class="branch-card-overlay">
+                        <span class="branch-card-badge">
+                            <span class="material-symbols-outlined">store</span>
+                            Disponible
+                        </span>
+                    </div>
                 </div>
-                <div class="branch-info">
+                <div class="branch-card-body">
                     <h3 class="branch-name">@branch.Name</h3>
-                    <div class="branch-address">
-                        <span class="material-symbols-outlined">location_on</span>
-                        <span>@branch.Address</span>
-                    </div>
-                    <div class="branch-phone">
-                        <span class="material-symbols-outlined">phone</span>
-                        <span>@branch.Phone</span>
+                    <div class="branch-details">
+                        <div class="branch-detail-item">
+                            <span class="material-symbols-outlined branch-detail-icon">location_on</span>
+                            <span>@branch.Address</span>
+                        </div>
+                        <div class="branch-detail-item">
+                            <span class="material-symbols-outlined branch-detail-icon">phone</span>
+                            <span>@branch.Phone</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(branch.Email))
+                        {
+                            <div class="branch-detail-item">
+                                <span class="material-symbols-outlined branch-detail-icon">mail</span>
+                                <span>@branch.Email</span>
+                            </div>
+                        }
                     </div>
                 </div>
-                <div class="branch-actions">
-                    <button class="btn btn-secondary btn-view-map" onclick="alert('Funcionalidad de mapa próximamente')">
+                <div class="branch-card-actions">
+                    <button class="btn btn-secondary btn-sm" onclick="alert('Funcionalidad de mapa próximamente')">
                         <span class="material-symbols-outlined">map</span>
-                        Ver Mapa
+                        Mapa
                     </button>
-                    <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@branch.Id" class="btn btn-primary btn-select">
-                        Seleccionar
+                    <a asp-controller="Booking" asp-action="Services" asp-route-branchId="@branch.Id" class="btn btn-primary">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                        Reservar
                     </a>
                 </div>
             </div>
