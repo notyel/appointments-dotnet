@@ -57,11 +57,11 @@ public static class DbInitializer
         context.Branches.AddRange(branch1, branch2);
 
         var s1Id = Guid.NewGuid();
-        var service1 = new Service { Id = s1Id, Name = "Corte de Cabello", Description = "Corte profesional", Category = ServiceCategory.Hairdressing };
+        var service1 = new Service { Id = s1Id, Name = "Corte de Cabello", Description = "Corte profesional", BusinessCategory = BusinessCategory.Hairdressing };
         var s2Id = Guid.NewGuid();
-        var service2 = new Service { Id = s2Id, Name = "Manicura", Description = "Cuidado de uñas", Category = ServiceCategory.Aesthetics };
+        var service2 = new Service { Id = s2Id, Name = "Manicura", Description = "Cuidado de uñas", BusinessCategory = BusinessCategory.Aesthetics };
         var s3Id = Guid.NewGuid();
-        var service3 = new Service { Id = s3Id, Name = "Masaje Relajante", Description = "60 min de relax", Category = ServiceCategory.SPA };
+        var service3 = new Service { Id = s3Id, Name = "Masaje Relajante", Description = "60 min de relax", BusinessCategory = BusinessCategory.SPA };
         context.Services.AddRange(service1, service2, service3);
 
         var bs1Id = Guid.NewGuid();

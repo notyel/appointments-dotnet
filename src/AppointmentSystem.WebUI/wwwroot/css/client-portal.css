@@ -170,7 +170,7 @@
 
 .option-card-price-badge {
     position: absolute;
-    top: var(--spacing-sm);
+    bottom: var(--spacing-sm);
     right: var(--spacing-sm);
     padding: var(--spacing-xs) var(--spacing-md);
     background: var(--gradient-primary);
@@ -181,6 +181,43 @@
     box-shadow: var(--shadow-md);
 }
 
+/* Etiqueta de categoría — esquina superior izquierda de la imagen */
+.option-card-tag {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    padding: 3px var(--spacing-sm);
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    backdrop-filter: blur(4px);
+}
+
+/* Badge Popular — esquina superior derecha */
+.option-card-popular {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px var(--spacing-sm);
+    background: #ff6b35;
+    color: #fff;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+}
+
+.option-card-popular .material-symbols-outlined {
+    font-size: 14px;
+}
+
 .option-card-content {
     padding: var(--spacing-lg);
     display: flex;
@@ -189,11 +226,7 @@
 }
 
 .option-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--spacing-sm);
-    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .option-card-title {
@@ -240,10 +273,8 @@
 
 .option-card-meta {
     display: flex;
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-md);
-    padding-top: var(--spacing-md);
-    border-top: 1px solid var(--color-border-light);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
 }
 
 .option-card-meta-item {

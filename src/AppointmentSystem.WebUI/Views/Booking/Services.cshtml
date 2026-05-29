@@ -5,7 +5,7 @@
 }
 
 @section Styles {
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=schedule,local_offer,arrow_back,spa,check_circle" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=schedule,bolt,arrow_back,check_circle,local_fire_department" rel="stylesheet" />
 }
 
 <div class="content">
@@ -24,32 +24,43 @@
                 @foreach (var service in Model)
                 {
                     <div class="option-card">
-                        @if (!string.IsNullOrEmpty(service.ImageUrl))
-                        {
-                            <div class="option-card-image">
-                                <img src="@service.ImageUrl" alt="@service.Name" onerror="this.parentElement.classList.add('option-card-image-placeholder')" />
-                                <span class="option-card-price-badge">$@service.Price</span>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="option-card-image option-card-image-placeholder">
-                                <span class="option-card-price-badge">$@service.Price</span>
-                            </div>
-                        }
+                        @* Imagen / placeholder con badges *@
+                        <div class="option-card-image @(string.IsNullOrEmpty(service.ImageUrl) ? "option-card-image-placeholder" : "")">
+                            @if (!string.IsNullOrEmpty(service.ImageUrl))
+                            {
+                                <img src="@service.ImageUrl" alt="@service.Name"
+                                     onerror="this.parentElement.classList.add('option-card-image-placeholder'); this.remove()" />
+                            }
+                            @* Etiqueta de categoría — esquina superior izquierda *@
+                            <span class="option-card-tag">@service.Category</span>
+                            @* Badge Popular — esquina superior derecha *@
+                            @if (service.IsPopular)
+                            {
+                                <span class="option-card-popular">
+                                    <span class="material-symbols-outlined">local_fire_department</span>
+                                    Popular
+                                </span>
+                            }
+                            @* Precio — esquina inferior derecha *@
+                            <span class="option-card-price-badge">$@service.Price</span>
+                        </div>
                         <div class="option-card-content">
+                            @* Título + duración + categoría inline *@
                             <div class="option-card-header">
                                 <h3 class="option-card-title">@service.Name</h3>
-                                <span class="option-card-category">@service.Category</span>
+                            </div>
+                            <div class="option-card-meta">
+                                <div class="option-card-meta-item">
+                                    <span class="material-symbols-outlined option-card-meta-icon">schedule</span>
+                                    <span>@service.DurationMinutes min</span>
+                                </div>
+                                <div class="option-card-meta-item">
+                                    <span class="material-symbols-outlined option-card-meta-icon">bolt</span>
+                                    <span>@service.Category</span>
+                                </div>
                             </div>
                             <div class="option-card-body">
                                 <p class="option-card-text">@service.Description</p>
-                                <div class="option-card-meta">
-                                    <div class="option-card-meta-item">
-                                        <span class="material-symbols-outlined option-card-meta-icon">schedule</span>
-                                        <span>@service.DurationMinutes min</span>
-                                    </div>
-                                </div>
                             </div>
                             <div class="option-card-footer">
                                 <a asp-controller="Booking" asp-action="Professionals"

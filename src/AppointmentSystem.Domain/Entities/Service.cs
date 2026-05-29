@@ -7,8 +7,19 @@ public class Service : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public ServiceCategory Category { get; set; }
+
+    /// <summary>
+    /// Clasificación de negocio del servicio. Se almacena directamente como columna
+    /// en esta tabla. Para la relación persistida con entidad propia, ver <see cref="CategoryId"/> y <see cref="CategoryEntity"/>.
+    /// </summary>
+    public BusinessCategory BusinessCategory { get; set; }
+
     public string? ImageUrl { get; set; }
+
+    /// <summary>Indica si el servicio es destacado/popular en la sucursal.</summary>
+    public bool IsPopular { get; set; } = false;
+
+    /// <summary>FK opcional hacia la entidad <see cref="Category"/>
     public Guid? CategoryId { get; set; }
     public Category? CategoryEntity { get; set; }
 

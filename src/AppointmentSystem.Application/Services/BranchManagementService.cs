@@ -54,10 +54,11 @@ public class BranchManagementService : IBranchManagementService
             Id = bs.Id,
             Name = bs.Service.Name,
             Description = bs.Service.Description,
-            Category = bs.Service.Category.ToSpanish(),
+            Category = bs.Service.BusinessCategory.ToSpanish(),
             DurationMinutes = bs.DurationMinutes,
             Price = bs.Price,
-            ImageUrl = bs.Service.ImageUrl
+            ImageUrl = bs.Service.ImageUrl,
+            IsPopular = bs.Service.IsPopular
         });
     }
 
