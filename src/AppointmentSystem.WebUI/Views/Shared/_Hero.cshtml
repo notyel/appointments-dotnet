@@ -1,0 +1,16 @@
+﻿@model AppointmentSystem.WebUI.Models.HeroViewModel
+
+<div class="page-hero @(Model.ImageUrl != null ? "page-hero--image" : "page-hero--plain")"
+     style="@(Model.ImageUrl != null ? $"background-image:url('{Model.ImageUrl}');min-height:{Model.Height}" : $"min-height:{Model.Height}")">
+    @if (Model.ImageUrl != null)
+    {
+        <div class="page-hero-overlay"></div>
+    }
+    <div class="page-hero-content">
+        <h1 class="page-hero-title">@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+        {
+            <p class="page-hero-subtitle">@Model.Subtitle</p>
+        }
+    </div>
+</div>

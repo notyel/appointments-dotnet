@@ -5,11 +5,16 @@ using AppointmentSystem.Infrastructure;
 using AppointmentSystem.Infrastructure.Persistence;
 using AppointmentSystem.Application;
 using AppointmentSystem.WebUI.Models;
+using AppointmentSystem.WebUI.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.AddService<InjectAppConfigFilter>();
+});
+builder.Services.AddScoped<InjectAppConfigFilter>();
 
 // Configure AppConfig (para vistas/controllers que inyecten IOptions<AppConfig>)
 builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));

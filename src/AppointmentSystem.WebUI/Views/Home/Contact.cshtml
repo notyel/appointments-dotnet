@@ -1,20 +1,24 @@
-@{
+ï»¿@{
     ViewData["Title"] = "Contacto";
     var config = ViewBag.AppConfig as AppointmentSystem.WebUI.Models.AppConfig;
+    string businessName = ViewBag.BusinessName ?? "Sistema de Citas";
+    var hero = new AppointmentSystem.WebUI.Models.HeroViewModel
+    {
+        Title    = "Contacto",
+        Subtitle = "Estamos aqui para ayudarte. Comunicate con nosotros a traves de cualquiera de estos medios.",
+        Height   = "260px"
+    };
 }
 
-<div class="content-narrow">
-    <div class="contact-hero">
-        <h1>Contáctanos</h1>
-        <p>Estamos aquí para ayudarte. Comunícate con nosotros a través de cualquiera de estos medios.</p>
-    </div>
+<partial name="_Hero" model="hero" />
 
+<div class="content">
     <div class="contact-cards">
         <div class="contact-card">
             <div class="contact-icon">
                 <span class="material-symbols-outlined">phone</span>
             </div>
-            <h3>Teléfono</h3>
+            <h3>Telefono</h3>
             <p>@config?.Contact.Phone</p>
         </div>
 
@@ -22,7 +26,7 @@
             <div class="contact-icon">
                 <span class="material-symbols-outlined">mail</span>
             </div>
-            <h3>Correo Electrónico</h3>
+            <h3>Correo Electronico</h3>
             <p>@config?.Contact.Email</p>
         </div>
 
@@ -30,7 +34,7 @@
             <div class="contact-icon">
                 <span class="material-symbols-outlined">location_on</span>
             </div>
-            <h3>Dirección</h3>
+            <h3>Direccion</h3>
             <p>@config?.Contact.Address</p>
         </div>
     </div>
@@ -38,33 +42,11 @@
 
 @section Styles {
     <style>
-        .contact-hero {
-            background: white;
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-3xl);
-            text-align: center;
-            margin: var(--spacing-2xl) 0;
-            box-shadow: var(--shadow-md);
-        }
-
-        .contact-hero h1 {
-            color: var(--color-text);
-            font-size: var(--font-size-4xl);
-            margin-bottom: var(--spacing-md);
-            font-weight: var(--font-weight-semibold);
-        }
-
-        .contact-hero p {
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-lg);
-            line-height: 1.6;
-        }
-
         .contact-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: var(--spacing-xl);
-            margin-bottom: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
         }
 
         .contact-card {
@@ -111,18 +93,9 @@
         }
 
         @@media (max-width: 768px) {
-            .contact-hero {
-                padding: var(--spacing-xl);
-            }
-
-            .contact-hero h1 {
-                font-size: var(--font-size-3xl);
-            }
-
             .contact-cards {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 }
-

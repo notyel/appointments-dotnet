@@ -19,15 +19,20 @@
     <header class="hdr">
         <div class="hdr-inner">
 
+            <!-- Botón atrás (solo mobile) -->
+            <button class="hdr-back" id="hdrBack" aria-label="Volver" onclick="history.back()">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+
             <!-- Logo -->
             <a asp-controller="Home" asp-action="Index" class="hdr-logo">
                 <span class="material-symbols-outlined">spa</span>
-                <span>Sistema de Citas</span>
+                <span>@(ViewBag.BusinessName as string ?? "Sistema de Citas")</span>
             </a>
 
             <!-- Nav principal (desktop: inline | mobile: drawer) -->
             <nav class="hdr-nav" id="hdrNav" aria-label="Navegación principal">
-                <a asp-controller="Home" asp-action="Index" class="hdr-nav-link">Nuestros Servicios</a>
+                <a asp-controller="Home" asp-action="Index" class="hdr-nav-link">Reservas</a>
                 <a asp-controller="Home" asp-action="About"  class="hdr-nav-link">Nosotros</a>
                 <a asp-controller="Home" asp-action="Contact" class="hdr-nav-link">Contacto</a>
             </nav>
@@ -72,7 +77,7 @@
             </button>
         </div>
         <nav class="hdr-drawer-nav">
-            <a asp-controller="Home" asp-action="Index">Nuestros Servicios</a>
+            <a asp-controller="Home" asp-action="Index">Reservas</a>
             <a asp-controller="Home" asp-action="About">Nosotros</a>
             <a asp-controller="Home" asp-action="Contact">Contacto</a>
         </nav>

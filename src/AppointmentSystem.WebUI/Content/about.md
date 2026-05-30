@@ -1,24 +1,29 @@
-# Sobre Nosotros
+ï»¿---
+hero_title: Sobre Nosotros
+hero_subtitle: Conoce quiÃ©nes somos y quÃ© nos apasiona
+hero_image: /images/about-hero.jpg
+hero_height: 380px
+---
 
 ## Nuestra Historia
 
-Somos un centro de estética y bienestar comprometido con brindarte la mejor experiencia en cuidado personal. Con años de experiencia en el sector, nos hemos convertido en referencia de calidad y profesionalismo.
+Somos un centro de estÃ©tica y bienestar comprometido con brindarte la mejor experiencia en cuidado personal. Con aÃ±os de experiencia en el sector, nos hemos convertido en referencia de calidad y profesionalismo.
 
-## Nuestra Misión
+## Nuestra MisiÃ³n
 
-Ofrecer servicios de alta calidad que realcen la belleza natural de cada cliente, utilizando técnicas innovadoras y productos de primera línea, en un ambiente profesional y acogedor.
+Ofrecer servicios de alta calidad que realcen la belleza natural de cada cliente, utilizando tÃ©cnicas innovadoras y productos de primera lÃ­nea, en un ambiente profesional y acogedor.
 
 ## Nuestros Valores
 
 - **Excelencia**: Comprometidos con la calidad en cada servicio
 - **Profesionalismo**: Personal altamente capacitado y certificado
-- **Innovación**: Siempre a la vanguardia en tendencias y tecnología
-- **Atención Personalizada**: Cada cliente es único y especial
+- **InnovaciÃ³n**: Siempre a la vanguardia en tendencias y tecnologÃ­a
+- **AtenciÃ³n Personalizada**: Cada cliente es Ãºnico y especial
 
 ## Nuestro Equipo
 
-Contamos con un equipo de profesionales certificados y apasionados por su trabajo, constantemente actualizándose para ofrecerte los mejores resultados.
+Contamos con un equipo de profesionales certificados y apasionados por su trabajo, constantemente actualizÃ¡ndose para ofrecerte los mejores resultados.
 
 ---
 
-*Este contenido puede ser modificado según las necesidades de tu negocio editando el archivo `Content/about.md`*
+*Este contenido puede ser modificado editando el archivo Content/about.md*

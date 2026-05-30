@@ -123,6 +123,9 @@
 /* Hamburguesa: oculta en desktop */
 .hdr-toggle { display: none; }
 
+/* Botón atrás: oculto en desktop */
+.hdr-back { display: none; }
+
 /* Drawer y overlay: ocultos en desktop */
 .hdr-overlay,
 .hdr-drawer { display: none; }
@@ -160,6 +163,59 @@
 .client-main {
     flex: 1;
     padding: 2rem 0;
+}
+
+/* ============================================
+   PAGE HERO (partial _Hero)
+   ============================================ */
+
+.page-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.page-hero--image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.page-hero--plain {
+    background: var(--gradient-primary);
+}
+
+.page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.page-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.page-hero-title {
+    color: #fff;
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 var(--spacing-md);
+    line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.page-hero-subtitle {
+    color: rgba(255,255,255,0.88);
+    font-size: var(--font-size-lg);
+    line-height: 1.6;
+    margin: 0;
 }
 
 /* ============================================
