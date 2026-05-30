@@ -1017,7 +1017,7 @@
 
 .booking-two-col {
     display: flex;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-lg);
     align-items: flex-start;
 }
 
@@ -1027,7 +1027,7 @@
 }
 
 .booking-summary-col {
-    width: 300px;
+    width: 340px;
     flex-shrink: 0;
     position: sticky;
     top: 90px;
@@ -1156,6 +1156,23 @@
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
+}
+
+/* Fecha y hora agrupadas con fondo levemente más oscuro */
+.summary-datetime-group {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin: var(--spacing-xs) 0;
+}
+
+.summary-datetime-group .summary-detail-row {
+    background: #f7f7f8;
+    border-radius: 0;
+}
+
+.summary-datetime-group .summary-detail-row + .summary-detail-row {
+    border-top: none;
+    padding-top: 0;
 }
 
 /* Total */

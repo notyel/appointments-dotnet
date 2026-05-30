@@ -25,7 +25,7 @@
     var evening   = Model.Where(s => s.Hour >= 18 || s.Hour < 5).ToList();
 
     string RouteDate(DateTime d) => d.ToString("yyyy-MM-dd");
-    string MonthLabel = selectedDate.ToString("MMM ''yy", CultureInfo.CurrentCulture);
+    string MonthLabel = selectedDate.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
 }
 
 @section Styles {
