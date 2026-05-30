@@ -2,8 +2,11 @@ using AppointmentSystem.Domain.Common;
 
 namespace AppointmentSystem.Domain.Entities;
 
-public class BranchSchedule : BaseEntity
+public class BranchSchedule : BaseEntity, IHasBusinessId
 {
+    /// <summary>Redundancia del tenant para queries directas sin JOIN a Branch.</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid BranchId { get; set; }
     public Branch Branch { get; set; } = null!;
 
@@ -13,8 +16,11 @@ public class BranchSchedule : BaseEntity
     public bool IsClosed { get; set; } = false;
 }
 
-public class ProfessionalSchedule : BaseEntity
+public class ProfessionalSchedule : BaseEntity, IHasBusinessId
 {
+    /// <summary>Redundancia del tenant para queries directas sin JOIN a Professional.</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid ProfessionalId { get; set; }
     public Professional Professional { get; set; } = null!;
 

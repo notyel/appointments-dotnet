@@ -29,8 +29,11 @@ public class Service : BaseEntity, IHasBusinessId
     public ICollection<BranchService> BranchServices { get; set; } = new List<BranchService>();
 }
 
-public class BranchService : BaseEntity
+public class BranchService : BaseEntity, IHasBusinessId
 {
+    /// <summary>Redundancia del tenant para queries directas sin JOIN a Branch/Service.</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid BranchId { get; set; }
     public Branch Branch { get; set; } = null!;
 

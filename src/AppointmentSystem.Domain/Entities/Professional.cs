@@ -26,8 +26,11 @@ public class Professional : BaseEntity, IHasBusinessId
     public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }
 
-public class ProfessionalService : BaseEntity
+public class ProfessionalService : BaseEntity, IHasBusinessId
 {
+    /// <summary>Redundancia del tenant para queries directas sin JOIN a Professional/BranchService.</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid ProfessionalId { get; set; }
     public Professional Professional { get; set; } = null!;
 

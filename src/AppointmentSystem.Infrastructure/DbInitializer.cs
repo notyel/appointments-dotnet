@@ -65,13 +65,13 @@ public static class DbInitializer
         context.Services.AddRange(service1, service2, service3);
 
         var bs1Id = Guid.NewGuid();
-        var bs1 = new BranchService { Id = bs1Id, BranchId = branch1Id, ServiceId = s1Id, DurationMinutes = 30, Price = 25 };
+        var bs1 = new BranchService { Id = bs1Id, BusinessId = businessId, BranchId = branch1Id, ServiceId = s1Id, DurationMinutes = 30, Price = 25 };
         var bs2Id = Guid.NewGuid();
-        var bs2 = new BranchService { Id = bs2Id, BranchId = branch1Id, ServiceId = s2Id, DurationMinutes = 45, Price = 35 };
+        var bs2 = new BranchService { Id = bs2Id, BusinessId = businessId, BranchId = branch1Id, ServiceId = s2Id, DurationMinutes = 45, Price = 35 };
         var bs3Id = Guid.NewGuid();
-        var bs3 = new BranchService { Id = bs3Id, BranchId = branch1Id, ServiceId = s3Id, DurationMinutes = 60, Price = 60 };
+        var bs3 = new BranchService { Id = bs3Id, BusinessId = businessId, BranchId = branch1Id, ServiceId = s3Id, DurationMinutes = 60, Price = 60 };
         var bs4Id = Guid.NewGuid();
-        var bs4 = new BranchService { Id = bs4Id, BranchId = branch2Id, ServiceId = s1Id, DurationMinutes = 30, Price = 30 };
+        var bs4 = new BranchService { Id = bs4Id, BusinessId = businessId, BranchId = branch2Id, ServiceId = s1Id, DurationMinutes = 30, Price = 30 };
         context.BranchServices.AddRange(bs1, bs2, bs3, bs4);
 
         var p1Id = Guid.NewGuid();
@@ -80,9 +80,9 @@ public static class DbInitializer
         var prof2 = new Professional { Id = p2Id, BusinessId = businessId, FirstName = "Carlos", LastName = "Pérez", Email = "carlos@bellezatotal.com", Phone = "222", BranchId = branch1Id };
         context.Professionals.AddRange(prof1, prof2);
 
-        context.ProfessionalServices.Add(new ProfessionalService { ProfessionalId = p1Id, BranchServiceId = bs1Id });
-        context.ProfessionalServices.Add(new ProfessionalService { ProfessionalId = p1Id, BranchServiceId = bs2Id });
-        context.ProfessionalServices.Add(new ProfessionalService { ProfessionalId = p2Id, BranchServiceId = bs3Id });
+        context.ProfessionalServices.Add(new ProfessionalService { BusinessId = businessId, ProfessionalId = p1Id, BranchServiceId = bs1Id });
+        context.ProfessionalServices.Add(new ProfessionalService { BusinessId = businessId, ProfessionalId = p1Id, BranchServiceId = bs2Id });
+        context.ProfessionalServices.Add(new ProfessionalService { BusinessId = businessId, ProfessionalId = p2Id, BranchServiceId = bs3Id });
 
         await context.SaveChangesAsync();
 

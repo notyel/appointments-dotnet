@@ -44,8 +44,12 @@ public class ApplicationDbContext : IdentityDbContext
         builder.Entity<Appointment>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
         builder.Entity<Notification>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
         // Entidades dependientes: se filtran transitivamente por las raíces superiores
-        builder.Entity<BranchService>().HasQueryFilter(x => !x.IsDeleted);
-        builder.Entity<ProfessionalService>().HasQueryFilter(x => !x.IsDeleted);
+        builder.Entity<BranchService>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<ProfessionalService>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<BranchSchedule>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<ProfessionalSchedule>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<BranchHoliday>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<ProfessionalAbsence>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
 
         // Relationships and constraints
         builder.Entity<BranchService>()

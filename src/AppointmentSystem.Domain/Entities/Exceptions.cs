@@ -2,16 +2,22 @@ using AppointmentSystem.Domain.Common;
 
 namespace AppointmentSystem.Domain.Entities;
 
-public class BranchHoliday : BaseEntity
+public class BranchHoliday : BaseEntity, IHasBusinessId
 {
+    /// <summary>Redundancia del tenant para queries directas sin JOIN a Branch.</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid BranchId { get; set; }
     public Branch Branch { get; set; } = null!;
     public DateTime Date { get; set; }
     public string? Description { get; set; }
 }
 
-public class ProfessionalAbsence : BaseEntity
+public class ProfessionalAbsence : BaseEntity, IHasBusinessId
 {
+    /// <summary>Redundancia del tenant para queries directas sin JOIN a Professional.</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid ProfessionalId { get; set; }
     public Professional Professional { get; set; } = null!;
     public DateTime StartDate { get; set; }
