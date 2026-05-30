@@ -3,8 +3,11 @@ using AppointmentSystem.Domain.Enums;
 
 namespace AppointmentSystem.Domain.Entities;
 
-public class Appointment : BaseEntity
+public class Appointment : BaseEntity, IHasBusinessId
 {
+    /// <summary>Tenant al que pertenece esta cita (desnormalizado para query filters directos).</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid BranchId { get; set; }
     public Branch Branch { get; set; } = null!;
 

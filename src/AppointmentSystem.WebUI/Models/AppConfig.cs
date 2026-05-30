@@ -2,7 +2,23 @@ namespace AppointmentSystem.WebUI.Models;
 
 public class AppConfig
 {
+    /// <summary>Id del tenant (Business) activo. Todos los datos se filtran por este valor.</summary>
+    public Guid BusinessId { get; set; }
+
     public string BusinessName { get; set; } = string.Empty;
+
+    /// <summary>Código ISO 4217 de la moneda (ej: COP, USD, EUR).</summary>
+    public string CurrencyCode { get; set; } = "USD";
+
+    /// <summary>Símbolo visual de la moneda (ej: $, €, £).</summary>
+    public string CurrencySymbol { get; set; } = "$";
+
+    /// <summary>Cultura .NET para formateo de números y fechas (ej: es-CO, en-US).</summary>
+    public string CultureInfo { get; set; } = "en-US";
+
+    /// <summary>IANA Time Zone ID para conversión de fechas (ej: America/Bogota, UTC).</summary>
+    public string TimeZoneId { get; set; } = "UTC";
+
     public ContactInfo Contact { get; set; } = new();
 }
 

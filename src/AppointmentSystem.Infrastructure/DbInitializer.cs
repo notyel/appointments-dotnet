@@ -57,11 +57,11 @@ public static class DbInitializer
         context.Branches.AddRange(branch1, branch2);
 
         var s1Id = Guid.NewGuid();
-        var service1 = new Service { Id = s1Id, Name = "Corte de Cabello", Description = "Corte profesional", BusinessCategory = BusinessCategory.Hairdressing };
+        var service1 = new Service { Id = s1Id, BusinessId = businessId, Name = "Corte de Cabello", Description = "Corte profesional", BusinessCategory = BusinessCategory.Hairdressing };
         var s2Id = Guid.NewGuid();
-        var service2 = new Service { Id = s2Id, Name = "Manicura", Description = "Cuidado de uñas", BusinessCategory = BusinessCategory.Aesthetics };
+        var service2 = new Service { Id = s2Id, BusinessId = businessId, Name = "Manicura", Description = "Cuidado de uñas", BusinessCategory = BusinessCategory.Aesthetics };
         var s3Id = Guid.NewGuid();
-        var service3 = new Service { Id = s3Id, Name = "Masaje Relajante", Description = "60 min de relax", BusinessCategory = BusinessCategory.SPA };
+        var service3 = new Service { Id = s3Id, BusinessId = businessId, Name = "Masaje Relajante", Description = "60 min de relax", BusinessCategory = BusinessCategory.SPA };
         context.Services.AddRange(service1, service2, service3);
 
         var bs1Id = Guid.NewGuid();
@@ -75,9 +75,9 @@ public static class DbInitializer
         context.BranchServices.AddRange(bs1, bs2, bs3, bs4);
 
         var p1Id = Guid.NewGuid();
-        var prof1 = new Professional { Id = p1Id, FirstName = "Ana", LastName = "García", Email = "ana@bellezatotal.com", Phone = "111", BranchId = branch1Id };
+        var prof1 = new Professional { Id = p1Id, BusinessId = businessId, FirstName = "Ana", LastName = "García", Email = "ana@bellezatotal.com", Phone = "111", BranchId = branch1Id };
         var p2Id = Guid.NewGuid();
-        var prof2 = new Professional { Id = p2Id, FirstName = "Carlos", LastName = "Pérez", Email = "carlos@bellezatotal.com", Phone = "222", BranchId = branch1Id };
+        var prof2 = new Professional { Id = p2Id, BusinessId = businessId, FirstName = "Carlos", LastName = "Pérez", Email = "carlos@bellezatotal.com", Phone = "222", BranchId = branch1Id };
         context.Professionals.AddRange(prof1, prof2);
 
         context.ProfessionalServices.Add(new ProfessionalService { ProfessionalId = p1Id, BranchServiceId = bs1Id });

@@ -3,6 +3,7 @@ using System;
 using AppointmentSystem.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppointmentSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260529222519_AddTenantQueryFilters")]
+    partial class AddTenantQueryFilters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +35,6 @@ namespace AppointmentSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BranchServiceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ClientId")
@@ -315,9 +315,6 @@ namespace AppointmentSystem.Infrastructure.Migrations
                     b.Property<int>("BusinessCategory")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("BusinessId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -349,9 +346,6 @@ namespace AppointmentSystem.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -400,9 +394,6 @@ namespace AppointmentSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("AppointmentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
@@ -454,9 +445,6 @@ namespace AppointmentSystem.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BranchId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -639,9 +627,6 @@ namespace AppointmentSystem.Infrastructure.Migrations
 
                     b.Property<int>("BusinessCategory")
                         .HasColumnType("integer");
-
-                    b.Property<Guid>("BusinessId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");

@@ -7,8 +7,11 @@ namespace AppointmentSystem.Domain.Entities;
 /// Entidad persistida que representa una categoría de negocio para agrupar servicios.
 /// El campo <see cref="BusinessCategory"/> vincula esta entidad con el enum de clasificación.
 /// </summary>
-public class Category : BaseEntity
+public class Category : BaseEntity, IHasBusinessId
 {
+    /// <summary>Tenant al que pertenece esta categoría.</summary>
+    public Guid BusinessId { get; set; }
+
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
 

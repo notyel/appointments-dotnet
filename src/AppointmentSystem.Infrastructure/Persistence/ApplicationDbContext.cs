@@ -2,14 +2,17 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using AppointmentSystem.Domain.Entities;
 using AppointmentSystem.Domain.Common;
-
+using AppointmentSystem.Application.Interfaces;
 namespace AppointmentSystem.Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    private readonly Guid _businessId;
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ITenantSettings tenantSettings)
         : base(options)
     {
+        _businessId = tenantSettings.BusinessId;
     }
 
     public DbSet<Business> Businesses => Set<Business>();
@@ -31,16 +34,18 @@ public class ApplicationDbContext : IdentityDbContext
     {
         base.OnModelCreating(builder);
 
-        // Soft delete filter
-        builder.Entity<Business>().HasQueryFilter(x => !x.IsDeleted);
-        builder.Entity<Branch>().HasQueryFilter(x => !x.IsDeleted);
-        builder.Entity<Service>().HasQueryFilter(x => !x.IsDeleted);
+        // Soft delete filter + tenant isolation — BusinessId directo en cada tabla de negocio
+        builder.Entity<Business>().HasQueryFilter(x => !x.IsDeleted && x.Id == _businessId);
+        builder.Entity<Branch>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<Service>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<Professional>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<Client>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<Appointment>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        builder.Entity<Notification>().HasQueryFilter(x => !x.IsDeleted && x.BusinessId == _businessId);
+        // Entidades dependientes: se filtran transitivamente por las raíces superiores
         builder.Entity<BranchService>().HasQueryFilter(x => !x.IsDeleted);
-        builder.Entity<Professional>().HasQueryFilter(x => !x.IsDeleted);
         builder.Entity<ProfessionalService>().HasQueryFilter(x => !x.IsDeleted);
-        builder.Entity<Client>().HasQueryFilter(x => !x.IsDeleted);
-        builder.Entity<Appointment>().HasQueryFilter(x => !x.IsDeleted);
-        builder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
 
         // Relationships and constraints
         builder.Entity<BranchService>()
@@ -79,6 +84,9 @@ public class ApplicationDbContext : IdentityDbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedAt = DateTime.UtcNow;
+                    // Auto-asignar BusinessId en entidades de negocio que lo tengan
+                    if (entry.Entity is IHasBusinessId tenantEntity && tenantEntity.BusinessId == Guid.Empty)
+                        tenantEntity.BusinessId = _businessId;
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedAt = DateTime.UtcNow;

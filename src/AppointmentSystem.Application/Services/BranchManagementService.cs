@@ -1,4 +1,5 @@
 using AppointmentSystem.Application.DTOs;
+using AppointmentSystem.Application.Helpers;
 using AppointmentSystem.Application.Interfaces;
 using AppointmentSystem.Domain.Entities;
 using AppointmentSystem.Domain.Extensions;
@@ -9,10 +10,12 @@ namespace AppointmentSystem.Application.Services;
 public class BranchManagementService : IBranchManagementService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IFormatSettings _format;
 
-    public BranchManagementService(IUnitOfWork unitOfWork)
+    public BranchManagementService(IUnitOfWork unitOfWork, IFormatSettings format)
     {
         _unitOfWork = unitOfWork;
+        _format = format;
     }
 
     public async Task<IEnumerable<BranchDto>> GetAllBranchesAsync()
@@ -57,6 +60,7 @@ public class BranchManagementService : IBranchManagementService
             Category = bs.Service.BusinessCategory.ToSpanish(),
             DurationMinutes = bs.DurationMinutes,
             Price = bs.Price,
+            FormattedPrice = FormatHelper.FormatCurrency(bs.Price, _format),
             ImageUrl = bs.Service.ImageUrl,
             IsPopular = bs.Service.IsPopular
         });

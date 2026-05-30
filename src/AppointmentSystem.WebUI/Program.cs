@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Globalization;
 using AppointmentSystem.Infrastructure;
 using AppointmentSystem.Infrastructure.Persistence;
 using AppointmentSystem.Application;
@@ -10,14 +11,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure AppConfig
+// Configure AppConfig (para vistas/controllers que inyecten IOptions<AppConfig>)
 builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
 
-// Add layers
+// Add layers (registra ITenantSettings, IFormatSettings, DbContext, etc.)
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
 var app = builder.Build();
+
+// Configurar cultura global según AppConfig
+var cultureCode = builder.Configuration["AppConfig:CultureInfo"] ?? "en-US";
+var culture = new CultureInfo(cultureCode);
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 // Seed database
 using (var scope = app.Services.CreateScope())

@@ -18,6 +18,8 @@ public class ServiceDto
     public string Category { get; set; } = string.Empty;
     public int DurationMinutes { get; set; }
     public decimal Price { get; set; }
+    /// <summary>Precio formateado con símbolo y cultura del tenant (ej: $25.000).</summary>
+    public string FormattedPrice { get; set; } = string.Empty;
     public string? ImageUrl { get; set; }
     public bool IsPopular { get; set; }
 }

@@ -2,8 +2,11 @@ using AppointmentSystem.Domain.Common;
 
 namespace AppointmentSystem.Domain.Entities;
 
-public class Client : BaseEntity
+public class Client : BaseEntity, IHasBusinessId
 {
+    /// <summary>Tenant al que pertenece este cliente.</summary>
+    public Guid BusinessId { get; set; }
+
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;

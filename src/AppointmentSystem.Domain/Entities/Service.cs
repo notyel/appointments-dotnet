@@ -3,8 +3,11 @@ using AppointmentSystem.Domain.Enums;
 
 namespace AppointmentSystem.Domain.Entities;
 
-public class Service : BaseEntity
+public class Service : BaseEntity, IHasBusinessId
 {
+    /// <summary>Tenant al que pertenece este servicio.</summary>
+    public Guid BusinessId { get; set; }
+
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 

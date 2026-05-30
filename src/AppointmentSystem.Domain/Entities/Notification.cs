@@ -2,8 +2,11 @@ using AppointmentSystem.Domain.Common;
 
 namespace AppointmentSystem.Domain.Entities;
 
-public class Notification : BaseEntity
+public class Notification : BaseEntity, IHasBusinessId
 {
+    /// <summary>Tenant al que pertenece esta notificación.</summary>
+    public Guid BusinessId { get; set; }
+
     public Guid? AppointmentId { get; set; }
     public string Recipient { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty; // Email, SMS, etc.
