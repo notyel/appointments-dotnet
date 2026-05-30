@@ -25,4 +25,10 @@ public interface IFormatSettings
 
     /// <summary>IANA Time Zone ID (ej: America/Bogota).</summary>
     string TimeZoneId { get; }
+
+    /// <summary>Número de decimales para valores monetarios (ej: 0 para COP, 2 para USD).</summary>
+    int CurrencyDecimals { get; }
+
+    /// <summary>Número máximo de días a futuro que se permite reservar una cita.</summary>
+    int MaxBookingDays { get; }
 }

@@ -1,13 +1,39 @@
 @model IEnumerable<DateTime>
+@using System.Globalization
 @{
     ViewData["Title"] = "Seleccione Fecha y Hora";
     ViewBag.CurrentStep = 4;
+
+    var today        = DateTime.Today;
     var selectedDate = (DateTime)ViewBag.SelectedDate;
+    var maxDate      = (DateTime)ViewBag.MaxDate;
+    var weekStart    = (DateTime)ViewBag.WeekStart;
+    var calendarDays = (List<DateTime>)ViewBag.CalendarDays;
+
+    // Semana visible: 7 días desde weekStart que estén en el rango disponible
+    var weekDays = Enumerable.Range(0, 7).Select(i => weekStart.AddDays(i)).ToList();
+
+    // Semana anterior / siguiente
+    var prevWeek = weekStart.AddDays(-7);
+    var nextWeek = weekStart.AddDays(7);
+    bool canGoPrev = prevWeek >= today || weekStart > today;
+    bool canGoNext = nextWeek <= maxDate;
+
+    // Agrupar slots por período del día
+    var morning   = Model.Where(s => s.Hour >= 5  && s.Hour < 12).ToList();
+    var afternoon = Model.Where(s => s.Hour >= 12 && s.Hour < 18).ToList();
+    var evening   = Model.Where(s => s.Hour >= 18 || s.Hour < 5).ToList();
+
+    string RouteDate(DateTime d) => d.ToString("yyyy-MM-dd");
+    string MonthLabel = selectedDate.ToString("MMM ''yy", CultureInfo.CurrentCulture);
 }
 
 @section Styles {
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=warning,arrow_back,calendar_today" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&icon_names=warning,arrow_back,chevron_left,chevron_right,wb_sunny,brightness_5,bedtime,schedule,event" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/slot-confirm-modal.css" asp-append-version="true" />
 }
+
+<partial name="_SlotConfirmModal" />
 
 <div class="content">
     <partial name="_BookingStepper" />
@@ -21,56 +47,156 @@
 
     <div class="booking-two-col">
         <div class="booking-main-col">
-            <div class="date-selector">
-                <form method="get" asp-action="Slots">
-                    <input type="hidden" name="branchId" value="@ViewBag.BranchId" />
-                    <input type="hidden" name="branchServiceId" value="@ViewBag.BranchServiceId" />
-                    <input type="hidden" name="professionalId" value="@ViewBag.ProfessionalId" />
-                    <div class="form-group">
-                        <label class="form-label">
-                            <span class="material-symbols-outlined" style="vertical-align:middle;font-size:1rem;">calendar_today</span>
-                            Seleccionar Fecha:
-                        </label>
-                        <input type="date"
-                               name="date"
-                               value="@selectedDate.ToString("yyyy-MM-dd")"
-                               onchange="this.form.submit()"
-                               min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            <div class="cal-card">
+                <div class="cal-header">
+                    <span class="cal-month-label">@MonthLabel</span>
+                    <div class="cal-nav">
+                        @if (canGoPrev && weekStart > today)
+                        {
+                            <a class="cal-nav-btn"
+                               asp-action="Slots"
+                               asp-route-branchId="@ViewBag.BranchId"
+                               asp-route-branchServiceId="@ViewBag.BranchServiceId"
+                               asp-route-professionalId="@ViewBag.ProfessionalId"
+                               asp-route-date="@RouteDate(prevWeek.Date < today ? today : prevWeek)">
+                                <span class="material-symbols-outlined">chevron_left</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="cal-nav-btn cal-nav-btn--disabled"><span class="material-symbols-outlined">chevron_left</span></span>
+                        }
+                        @if (canGoNext)
+                        {
+                            <a class="cal-nav-btn"
+                               asp-action="Slots"
+                               asp-route-branchId="@ViewBag.BranchId"
+                               asp-route-branchServiceId="@ViewBag.BranchServiceId"
+                               asp-route-professionalId="@ViewBag.ProfessionalId"
+                               asp-route-date="@RouteDate(nextWeek)">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="cal-nav-btn cal-nav-btn--disabled"><span class="material-symbols-outlined">chevron_right</span></span>
+                        }
                     </div>
-                </form>
+                </div>
+
+                <div class="cal-days-row">
+                    @foreach (var day in weekDays)
+                    {
+                        bool isPast      = day < today;
+                        bool isSelected  = day.Date == selectedDate.Date;
+                        bool isAvailable = calendarDays.Contains(day);
+
+                        string dayClass = "cal-day";
+                        if (isPast || !isAvailable)  dayClass += " cal-day--unavailable";
+                        else if (isSelected)          dayClass += " cal-day--selected";
+
+                        @if (isPast || !isAvailable)
+                        {
+                            <div class="@dayClass">
+                                <span class="cal-day-name">@day.ToString("ddd", CultureInfo.CurrentCulture)</span>
+                                <span class="cal-day-num">@day.Day</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="@dayClass"
+                               asp-action="Slots"
+                               asp-route-branchId="@ViewBag.BranchId"
+                               asp-route-branchServiceId="@ViewBag.BranchServiceId"
+                               asp-route-professionalId="@ViewBag.ProfessionalId"
+                               asp-route-date="@RouteDate(day)">
+                                <span class="cal-day-name">@day.ToString("ddd", CultureInfo.CurrentCulture)</span>
+                                <span class="cal-day-num">@day.Day</span>
+                            </a>
+                        }
+                    }
+                </div>
             </div>
 
-            <h3 style="margin-bottom: var(--spacing-lg); color: var(--color-text);">
-                Horarios disponibles para @selectedDate.ToString("dd/MM/yyyy")
-            </h3>
-
+            @* Slots agrupados por período *@
+            <div class="slots-date-label">
+                <span class="material-symbols-outlined">event</span>
+                <span>@selectedDate.ToString("dddd, d 'de' MMMM 'de' yyyy", CultureInfo.CurrentCulture)</span>
+            </div>
             @if (!Model.Any())
             {
-                <div class="alert alert-warning">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div class="alert alert-warning" style="margin-top:var(--spacing-xl)">
+                    <div style="display:flex;align-items:center;gap:.5rem;">
                         <span class="material-symbols-outlined">warning</span>
                         <strong>No hay turnos disponibles</strong>
                     </div>
-                    <p style="margin: 0.5rem 0 0 0;">No hay horarios disponibles para esta fecha. Por favor, seleccione otra fecha.</p>
+                    <p style="margin:.5rem 0 0;">No hay horarios disponibles para esta fecha. Por favor, seleccione otra fecha.</p>
                 </div>
             }
             else
             {
-                <div class="time-slots-grid">
-                    @foreach (var slot in Model)
-                    {
-                        <a asp-controller="Booking" asp-action="Create"
-                           asp-route-branchId="@ViewBag.BranchId"
-                           asp-route-branchServiceId="@ViewBag.BranchServiceId"
-                           asp-route-professionalId="@ViewBag.ProfessionalId"
-                           asp-route-startTime="@slot.ToString("yyyy-MM-ddTHH:mm:ss")"
-                           class="time-slot">
-                            @slot.ToString("HH:mm")
-                        </a>
-                    }
-                </div>
+                @if (morning.Any())
+                {
+                    <div class="slots-period">
+                        <div class="slots-period-header">
+                            <span class="material-symbols-outlined slots-period-icon">wb_sunny</span>
+                            <span class="slots-period-label">Mañana</span>
+                        </div>
+                        <div class="time-slots-grid">
+                            @foreach (var slot in morning)
+                            {
+                                <button type="button"
+                                        class="time-slot"
+                                        data-url="@Url.Action("Create", "Booking", new { branchId = ViewBag.BranchId, branchServiceId = ViewBag.BranchServiceId, professionalId = ViewBag.ProfessionalId, startTime = slot.ToString("yyyy-MM-ddTHH:mm:ss") })"
+                                        data-label="@slot.ToString("hh:mm tt", CultureInfo.InvariantCulture)">
+                                    @slot.ToString("hh:mm tt", CultureInfo.InvariantCulture)
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (afternoon.Any())
+                {
+                    <div class="slots-period">
+                        <div class="slots-period-header">
+                            <span class="material-symbols-outlined slots-period-icon">brightness_5</span>
+                            <span class="slots-period-label">Tarde</span>
+                        </div>
+                        <div class="time-slots-grid">
+                            @foreach (var slot in afternoon)
+                            {
+                                <button type="button"
+                                        class="time-slot"
+                                        data-url="@Url.Action("Create", "Booking", new { branchId = ViewBag.BranchId, branchServiceId = ViewBag.BranchServiceId, professionalId = ViewBag.ProfessionalId, startTime = slot.ToString("yyyy-MM-ddTHH:mm:ss") })"
+                                        data-label="@slot.ToString("hh:mm tt", CultureInfo.InvariantCulture)">
+                                    @slot.ToString("hh:mm tt", CultureInfo.InvariantCulture)
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (evening.Any())
+                {
+                    <div class="slots-period">
+                        <div class="slots-period-header">
+                            <span class="material-symbols-outlined slots-period-icon">bedtime</span>
+                            <span class="slots-period-label">Noche</span>
+                        </div>
+                        <div class="time-slots-grid">
+                            @foreach (var slot in evening)
+                            {
+                                <button type="button"
+                                        class="time-slot"
+                                        data-url="@Url.Action("Create", "Booking", new { branchId = ViewBag.BranchId, branchServiceId = ViewBag.BranchServiceId, professionalId = ViewBag.ProfessionalId, startTime = slot.ToString("yyyy-MM-ddTHH:mm:ss") })"
+                                        data-label="@slot.ToString("hh:mm tt", CultureInfo.InvariantCulture)">
+                                    @slot.ToString("hh:mm tt", CultureInfo.InvariantCulture)
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
             }
-        </div>
+            </div>
 
         <aside class="booking-summary-col">
             <partial name="_BookingSummary" />
@@ -85,6 +211,83 @@
             <span class="material-symbols-outlined">arrow_back</span>
             <span>Volver a Profesionales</span>
         </a>
-        <div></div>
+        <button type="button" id="slotContinueBtn" class="btn btn-primary" style="display:none;" disabled>
+            <span>Continuar</span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
     </div>
 </div>
+
+@section Scripts {
+<script>
+(function () {
+    const modal       = document.getElementById('slotConfirmModal');
+    const badgeTime   = document.getElementById('scmTimeBadge');
+    const badgeDate   = document.getElementById('scmDateBadge');
+    const btnCancel   = document.getElementById('scmCancel');
+    const btnConfirm  = document.getElementById('scmConfirm');
+    const btnContinue = document.getElementById('slotContinueBtn');
+
+    // Fecha seleccionada desde el servidor (capitalizada)
+    const selectedDateLabel = '@selectedDate.ToString("dddd, d 'de' MMMM 'de' yyyy", CultureInfo.CurrentCulture)';
+
+    let pendingUrl = null;
+    let activeSlot = null;
+
+    // Abrir modal al hacer clic en un slot
+    document.querySelectorAll('.time-slot').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            if (activeSlot && activeSlot !== btn) {
+                activeSlot.classList.remove('time-slot--selected');
+            }
+            activeSlot = btn;
+            pendingUrl = btn.dataset.url;
+
+            btn.classList.add('time-slot--selected');
+            badgeTime.textContent = btn.dataset.label;
+            badgeDate.textContent = selectedDateLabel;
+            modal.classList.add('scm-open');
+
+            // Actualizar hora en el panel de resumen
+            var summaryRow   = document.getElementById('summaryTimeRow');
+            var summaryValue = document.getElementById('summaryTimeValue');
+            if (summaryRow && summaryValue) {
+                summaryValue.textContent = btn.dataset.label;
+                summaryRow.style.display = '';
+            }
+        });
+    });
+
+    // Cancelar: cierra modal, deja slot marcado, muestra botón Continuar
+    btnCancel.addEventListener('click', function () {
+        modal.classList.remove('scm-open');
+        if (pendingUrl) {
+            btnContinue.style.display = '';
+            btnContinue.disabled = false;
+        }
+    });
+
+    // Confirmar: navegar inmediatamente
+    btnConfirm.addEventListener('click', function () {
+        if (pendingUrl) window.location.href = pendingUrl;
+    });
+
+    // Botón Continuar inferior
+    btnContinue.addEventListener('click', function () {
+        if (pendingUrl) window.location.href = pendingUrl;
+    });
+
+    // Cerrar modal al hacer clic fuera del diálogo
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.classList.remove('scm-open');
+            if (pendingUrl) {
+                btnContinue.style.display = '';
+                btnContinue.disabled = false;
+            }
+        }
+    });
+}());
+</script>
+}
+

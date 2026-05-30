@@ -16,7 +16,8 @@ public static class FormatHelper
     {
         var culture = new CultureInfo(settings.CultureInfo);
         culture.NumberFormat.CurrencySymbol = settings.CurrencySymbol;
-        return amount.ToString("C0", culture);
+        culture.NumberFormat.CurrencyDecimalDigits = settings.CurrencyDecimals;
+        return amount.ToString("C", culture);
     }
 
     /// <summary>

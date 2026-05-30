@@ -12,8 +12,10 @@ internal sealed class AppSettings : ITenantSettings, IFormatSettings
     public Guid BusinessId { get; }
     public string CurrencyCode { get; }
     public string CurrencySymbol { get; }
+    public int CurrencyDecimals { get; }
     public string CultureInfo { get; }
     public string TimeZoneId { get; }
+    public int MaxBookingDays { get; }
 
     public AppSettings(IConfiguration configuration)
     {
@@ -22,9 +24,11 @@ internal sealed class AppSettings : ITenantSettings, IFormatSettings
         BusinessId = Guid.Parse(section["BusinessId"]
             ?? throw new InvalidOperationException("AppConfig:BusinessId no está configurado en appsettings.json"));
 
-        CurrencyCode   = section["CurrencyCode"]   ?? "USD";
-        CurrencySymbol = section["CurrencySymbol"] ?? "$";
-        CultureInfo    = section["CultureInfo"]    ?? "en-US";
-        TimeZoneId     = section["TimeZoneId"]     ?? "UTC";
+        CurrencyCode     = section["CurrencyCode"]                                                ?? "USD";
+        CurrencySymbol   = section["CurrencySymbol"]                                              ?? "$";
+        CurrencyDecimals = int.TryParse(section["CurrencyDecimals"], out var dec)  ? dec  : 2;
+        CultureInfo      = section["CultureInfo"]                                                 ?? "en-US";
+        TimeZoneId       = section["TimeZoneId"]                                                  ?? "UTC";
+        MaxBookingDays   = int.TryParse(section["MaxBookingDays"],   out var days) ? days : 30;
     }
 }

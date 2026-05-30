@@ -1,3 +1,5 @@
+@using AppointmentSystem.Application.Helpers
+@inject AppointmentSystem.Application.Interfaces.IFormatSettings FormatSettings
 <div class="booking-summary-panel">
 
     <div class="booking-summary-header">
@@ -8,7 +10,9 @@
         bool hasService = !string.IsNullOrEmpty(ViewBag.ServiceName as string);
         bool hasProfessional = !string.IsNullOrEmpty(ViewBag.ProfessionalName as string);
         bool hasDate = ViewBag.SelectedDate is DateTime sd && sd != default;
-        decimal? price = ViewBag.ServicePrice as decimal?;
+        string? formattedPrice = ViewBag.ServiceFormattedPrice as string;
+        string? formattedDate  = ViewBag.FormattedDate as string;
+        string? formattedTime  = ViewBag.FormattedTime as string;
         int? duration = ViewBag.ServiceDuration as int?;
     }
 
@@ -48,15 +52,25 @@
         }
         @if (hasDate)
         {
-            var selectedDate = (DateTime)ViewBag.SelectedDate;
+            var displayDate = !string.IsNullOrEmpty(formattedDate)
+                ? formattedDate
+                : FormatHelper.FormatDateTime(((DateTime)ViewBag.SelectedDate).ToUniversalTime(), FormatSettings, "dddd, d 'de' MMMM 'de' yyyy");
             <div class="summary-detail-row">
                 <span class="material-symbols-outlined summary-detail-icon">calendar_today</span>
                 <div class="summary-detail-info">
-                    <span class="summary-detail-label">Fecha seleccionada</span>
-                    <span class="summary-detail-value">@selectedDate.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"))</span>
+                    <span class="summary-detail-label">Fecha</span>
+                    <span class="summary-detail-value">@displayDate</span>
                 </div>
             </div>
         }
+        @* Fila de hora: visible si el servidor la provee (Create) o inyectada por JS (Slots) *@
+        <div class="summary-detail-row" id="summaryTimeRow" style="@(string.IsNullOrEmpty(formattedTime) ? "display:none;" : "")">
+            <span class="material-symbols-outlined summary-detail-icon">schedule</span>
+            <div class="summary-detail-info">
+                <span class="summary-detail-label">Hora</span>
+                <span class="summary-detail-value" id="summaryTimeValue">@(formattedTime ?? "")</span>
+            </div>
+        </div>
         @if (!string.IsNullOrEmpty(ViewBag.BranchName as string))
         {
             <div class="summary-detail-row">
@@ -69,11 +83,11 @@
         }
     </div>
 
-    @if (price != null)
+    @if (formattedPrice != null)
     {
         <div class="summary-total-row">
             <span class="summary-total-label">Total</span>
-            <span class="summary-total-amount">$@price?.ToString("0.00")</span>
+            <span class="summary-total-amount">@formattedPrice</span>
         </div>
     }
 

@@ -1,0 +1,128 @@
+/* ================================================
+   SLOT CONFIRM MODAL
+   ================================================ */
+.scm-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.scm-backdrop.scm-open {
+    display: flex;
+}
+
+.scm-dialog {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 1.75rem 1.5rem;
+    width: min(420px, 92vw);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    animation: scm-pop .2s ease;
+}
+
+@keyframes scm-pop {
+    from { transform: scale(.93); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.scm-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    margin: 0 auto;
+    font-size: 1.75rem;
+    color: #334155;
+}
+
+.scm-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+    margin: 0;
+}
+
+.scm-body {
+    font-size: 0.92rem;
+    color: #475569;
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.scm-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+}
+
+.scm-badge {
+    display: inline-block;
+    border-radius: 8px;
+    padding: .35rem .9rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-align: center;
+}
+
+.scm-badge--date {
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 0.88rem;
+}
+
+.scm-badge--time {
+    background: #0f172a;
+    color: #fff;
+    font-size: 1.05rem;
+}
+
+.scm-actions {
+    display: flex;
+    gap: .75rem;
+    justify-content: stretch;
+}
+
+.scm-btn {
+    flex: 1;
+    padding: .65rem 1rem;
+    border-radius: 10px;
+    font-size: .92rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: background .18s, color .18s, border-color .18s;
+}
+
+.scm-btn--cancel {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.scm-btn--cancel:hover {
+    background: #e2e8f0;
+}
+
+.scm-btn--confirm {
+    background: #0f172a;
+    color: #fff;
+    border-color: #0f172a;
+}
+
+.scm-btn--confirm:hover {
+    background: #1e293b;
+    border-color: #1e293b;
+}
