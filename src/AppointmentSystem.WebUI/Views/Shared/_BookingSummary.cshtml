@@ -1,20 +1,30 @@
 @using AppointmentSystem.Application.Helpers
 @inject AppointmentSystem.Application.Interfaces.IFormatSettings FormatSettings
-<div class="booking-summary-panel">
+
+@*
+    ARQUITECTURA:
+    - .booking-summary-panel   → siempre en el DOM (desktop lo muestra en la columna lateral)
+    - #summaryFab              → botón flotante mobile (teleport al <body> vía JS)
+    - #summaryDrawerOverlay    → overlay oscuro mobile (teleport al <body> vía JS)
+    - #summaryDrawer           → bottom sheet mobile; el JS clona/mueve el panel dentro cuando se abre
+*@
+
+@{
+    bool hasService      = !string.IsNullOrEmpty(ViewBag.ServiceName as string);
+    bool hasProfessional = !string.IsNullOrEmpty(ViewBag.ProfessionalName as string);
+    bool hasDate         = ViewBag.SelectedDate is DateTime sd && sd != default;
+    string? formattedPrice = ViewBag.ServiceFormattedPrice as string;
+    string? formattedDate  = ViewBag.FormattedDate as string;
+    string? formattedTime  = ViewBag.FormattedTime as string;
+    int? duration = ViewBag.ServiceDuration as int?;
+}
+
+@* ── Panel de resumen (desktop: visible en columna lateral) ── *@
+<div class="booking-summary-panel" id="bookingSummaryPanel">
 
     <div class="booking-summary-header">
         <h3>Resumen de tu reserva</h3>
     </div>
-
-    @{
-        bool hasService = !string.IsNullOrEmpty(ViewBag.ServiceName as string);
-        bool hasProfessional = !string.IsNullOrEmpty(ViewBag.ProfessionalName as string);
-        bool hasDate = ViewBag.SelectedDate is DateTime sd && sd != default;
-        string? formattedPrice = ViewBag.ServiceFormattedPrice as string;
-        string? formattedDate  = ViewBag.FormattedDate as string;
-        string? formattedTime  = ViewBag.FormattedTime as string;
-        int? duration = ViewBag.ServiceDuration as int?;
-    }
 
     @if (hasService || hasProfessional)
     {
@@ -98,3 +108,64 @@
         </p>
     </div>
 </div>
+
+@* ── Elementos mobile: se teleportan al <body> via JS ── *@
+<button class="summary-fab" id="summaryFab" aria-label="Ver resumen de reserva">
+    <span class="material-symbols-outlined">receipt_long</span>
+</button>
+
+<div class="summary-drawer-overlay" id="summaryDrawerOverlay"></div>
+
+<div class="summary-drawer" id="summaryDrawer">
+    <div class="summary-drawer-handle"></div>
+    <div class="summary-drawer-content"></div>
+</div>
+
+<script>
+(function () {
+    var fab     = document.getElementById('summaryFab');
+    var overlay = document.getElementById('summaryDrawerOverlay');
+    var drawer  = document.getElementById('summaryDrawer');
+    var panel   = document.getElementById('bookingSummaryPanel');
+    if (!fab || !panel) return;
+
+    // Solo activar en mobile
+    var mq = window.matchMedia('(max-width: 768px)');
+
+    function init(isMobile) {
+        if (isMobile) {
+            // Mover los elementos de UI al <body> para evitar
+            // quedar bloqueados por display:none del <aside>
+            document.body.appendChild(fab);
+            document.body.appendChild(overlay);
+            document.body.appendChild(drawer);
+        }
+    }
+
+    init(mq.matches);
+    mq.addEventListener('change', function (e) { init(e.matches); });
+
+    function openSummary() {
+        // Mover el panel dentro del drawer al abrir
+        var slot = drawer.querySelector('.summary-drawer-content');
+        if (slot && panel.parentElement !== slot) {
+            slot.appendChild(panel);
+        }
+        overlay.classList.add('summary-open');
+        drawer.classList.add('summary-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSummary() {
+        overlay.classList.remove('summary-open');
+        drawer.classList.remove('summary-open');
+        document.body.style.overflow = '';
+    }
+
+    fab.addEventListener('click', openSummary);
+    overlay.addEventListener('click', closeSummary);
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSummary();
+    });
+}());
+</script>

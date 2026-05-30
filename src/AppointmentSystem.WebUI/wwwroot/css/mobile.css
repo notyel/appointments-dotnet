@@ -1,0 +1,423 @@
+/* ============================================================
+   MOBILE.CSS — Estilos exclusivos para pantallas <= 768px
+   NO tocar para ajustes de desktop.
+   ============================================================ */
+
+/* Elementos que sólo existen en mobile — ocultos hasta que el media query los activa */
+.hdr-overlay,
+.hdr-drawer,
+.summary-fab,
+.summary-drawer-overlay,
+.summary-drawer { display: none; }
+
+@media (max-width: 768px) {
+
+    /* ════════════════════════════════════════
+       HEADER
+    ════════════════════════════════════════ */
+
+    .hdr-inner {
+        padding: 0 1rem;
+        height: 56px;
+        gap: 0;
+    }
+
+    /* Nav central: oculta en mobile (se usa el drawer) */
+    .hdr-nav    { display: none; }
+    .hdr-actions { display: none; }
+
+    /* Botón hamburguesa */
+    .hdr-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #f3f4ff;
+        border: 1px solid #e0e3ff;
+        cursor: pointer;
+        color: #667eea;
+        transition: background 0.15s;
+        flex-shrink: 0;
+    }
+
+    .hdr-toggle:active { background: #e0e3ff; }
+    .hdr-toggle .material-symbols-outlined { font-size: 1.35rem; }
+
+    /* ════════════════════════════════════════
+       OVERLAY
+    ════════════════════════════════════════ */
+
+    .hdr-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 299;
+    }
+
+    .hdr-overlay.is-open { display: block; }
+
+    /* ════════════════════════════════════════
+       DRAWER
+    ════════════════════════════════════════ */
+
+    .hdr-drawer {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 80vw;
+        max-width: 300px;
+        background: #fff;
+        z-index: 300;
+        transform: translateX(105%);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+        overflow-y: auto;
+    }
+
+    .hdr-drawer.is-open { transform: translateX(0); }
+
+    /* Cabecera del drawer */
+    .hdr-drawer-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid #eef0f4;
+        flex-shrink: 0;
+    }
+
+    .hdr-drawer-brand {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        letter-spacing: -0.01em;
+    }
+
+    .hdr-drawer-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f3f4ff;
+        border: 1px solid #e0e3ff;
+        cursor: pointer;
+        color: #667eea;
+        transition: background 0.15s;
+    }
+
+    .hdr-drawer-close:active { background: #e0e3ff; }
+    .hdr-drawer-close .material-symbols-outlined { font-size: 1.1rem; }
+
+    /* Links del drawer */
+    .hdr-drawer-nav {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 0;
+    }
+
+    .hdr-drawer-nav a {
+        padding: 0.9rem 1.5rem;
+        font-size: 0.97rem;
+        font-weight: 500;
+        color: #333;
+        text-decoration: none;
+        border-bottom: 1px solid #f3f4f6;
+        transition: background 0.12s, color 0.12s;
+    }
+
+    .hdr-drawer-nav a:last-child { border-bottom: none; }
+
+    .hdr-drawer-nav a:active,
+    .hdr-drawer-nav a:hover {
+        background: #f3f4ff;
+        color: #667eea;
+    }
+
+    /* Pie del drawer (usuario) */
+    .hdr-drawer-foot {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 1rem 1.25rem 1.5rem;
+        border-top: 1px solid #eef0f4;
+        background: #fafbff;
+        margin-top: auto;
+    }
+
+    .hdr-drawer-foot-link {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #555;
+        text-decoration: none;
+        padding: 0.35rem 0;
+    }
+
+    .hdr-drawer-foot-link .material-symbols-outlined { font-size: 1.1rem; color: #667eea; }
+
+    .hdr-drawer-foot-user {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.87rem;
+        color: #555;
+        padding: 0.25rem 0;
+    }
+
+    .hdr-drawer-foot-user .material-symbols-outlined { font-size: 1.1rem; color: #667eea; }
+
+    .hdr-drawer-btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    /* ════════════════════════════════════════
+       MAIN / CONTENIDO
+    ════════════════════════════════════════ */
+
+    .client-main { padding: 1rem 0; }
+
+    /* ════════════════════════════════════════
+       GRIDS DE CARDS
+    ════════════════════════════════════════ */
+
+    .options-grid,
+    .professionals-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    /* ════════════════════════════════════════
+       LAYOUT BOOKING: DOS COLUMNAS → UNA
+    ════════════════════════════════════════ */
+
+    .booking-two-col {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Resumen oculto en mobile — se abre via FAB */
+    .booking-summary-col { display: none !important; }
+    .booking-main-col    { width: 100%; }
+
+    /* ════════════════════════════════════════
+       FAB — BOTÓN FLOTANTE RESUMEN
+    ════════════════════════════════════════ */
+
+    /* Ondas que se expanden desde el borde del FAB */
+    @keyframes fab-ripple {
+        0%   { transform: scale(1);   opacity: 0.55; }
+        100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* Pulso leve del propio botón */
+    @keyframes fab-pulse {
+        0%, 100% { transform: scale(1); }
+        50%       { transform: scale(1.07); }
+    }
+
+    .summary-fab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px) + 1rem);
+        right: 1.25rem;
+        left: auto;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #667eea;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        z-index: 350;
+        box-shadow: 0 3px 10px rgba(102,126,234,0.35);
+        animation: fab-pulse 2.4s ease-in-out infinite;
+        /* Necesario para que z-index: -1 de ::before/::after funcione
+           dentro del botón sin salirse del stacking context */
+        isolation: isolate;
+    }
+
+    .summary-fab .material-symbols-outlined {
+        position: relative;
+        z-index: 1;   /* ícono siempre encima de las ondas */
+    }
+
+    .summary-fab::before,
+    .summary-fab::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: #667eea;
+        opacity: 0;
+        z-index: -1;  /* detrás del ícono, delante del fondo de página */
+        animation: fab-ripple 2.4s ease-out infinite;
+        pointer-events: none;
+    }
+
+    .summary-fab::after {
+        animation-delay: 0.8s;
+    }
+
+    .summary-fab:active {
+        transform: scale(0.92);
+        animation: none;
+    }
+
+    .summary-fab:active::before,
+    .summary-fab:active::after { display: none; }
+
+    .summary-fab .material-symbols-outlined { font-size: 1.4rem; }
+
+    /* ════════════════════════════════════════
+       BOTTOM SHEET — RESUMEN
+    ════════════════════════════════════════ */
+
+    .summary-drawer-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 399;
+    }
+
+    .summary-drawer-overlay.summary-open { display: block; }
+
+    .summary-drawer {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 400;
+        background: #fff;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -6px 32px rgba(0,0,0,0.15);
+        max-height: 85vh;
+        overflow-y: auto;
+        transform: translateY(105%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .summary-drawer.summary-open { transform: translateY(0); }
+
+    .summary-drawer-handle {
+        display: flex;
+        justify-content: center;
+        padding: 0.75rem 0 0.4rem;
+        flex-shrink: 0;
+        cursor: grab;
+    }
+
+    .summary-drawer-handle::before {
+        content: '';
+        width: 40px;
+        height: 4px;
+        background: #e0e3f0;
+        border-radius: 2px;
+    }
+
+    .summary-drawer .booking-summary-panel {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        flex: 1;
+    }
+
+    /* ════════════════════════════════════════
+       CALENDARIO
+    ════════════════════════════════════════ */
+
+    .cal-card            { margin-bottom: var(--spacing-md); }
+    .cal-header          { margin-bottom: var(--spacing-sm); }
+    .cal-month-label     { font-size: 1rem; }
+    .cal-days-row        { gap: 4px; }
+    .cal-day             { min-height: 56px; padding: var(--spacing-xs) 0; }
+    .cal-day-num         { font-size: 1.15rem; }
+    .cal-day-name        { font-size: 0.6rem; }
+
+    /* ════════════════════════════════════════
+       SLOTS
+    ════════════════════════════════════════ */
+
+    .time-slots-grid  { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+    .slots-date-label { font-size: 0.9rem; margin-bottom: var(--spacing-md); }
+    .slots-period-label { font-size: 0.9rem; }
+
+    /* ════════════════════════════════════════
+       STEPPER
+    ════════════════════════════════════════ */
+
+    .booking-stepper {
+        padding: var(--spacing-xs) 0;
+        margin-bottom: var(--spacing-md);
+        border-bottom: none;
+    }
+
+    .stepper-step-label { display: none; }
+
+    .stepper-step-number {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+        margin-bottom: 0;
+    }
+
+    .stepper-step-number .material-symbols-outlined { font-size: 1rem; }
+
+    .stepper-container::before,
+    .stepper-progress { top: 15px; }
+
+    .stepper-step.active .stepper-step-number {
+        width: 34px;
+        height: 34px;
+    }
+
+    /* ════════════════════════════════════════
+       STEP NAVIGATION
+    ════════════════════════════════════════ */
+
+    .step-navigation {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md) 0;
+        margin-top: var(--spacing-lg);
+    }
+
+    .step-navigation .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* ════════════════════════════════════════
+       TÍTULOS DE PASO
+    ════════════════════════════════════════ */
+
+    .step-title       { font-size: var(--font-size-xl); }
+    .step-description { font-size: var(--font-size-xs); }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+
+    .client-footer-content {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+    }
+}

@@ -1,4 +1,4 @@
-/* ============================================
+ï»¿/* ============================================
    COMPONENTE: INDICADOR DE PROGRESO (STEPPER)
    ============================================ */
 
@@ -123,7 +123,7 @@
 }
 
 /* ============================================
-   NAVEGACIÓN ENTRE PASOS
+   NAVEGACIï¿½N ENTRE PASOS
    ============================================ */
 
 .step-navigation {
@@ -140,36 +140,4 @@
 }
 
 /* ============================================
-   RESPONSIVE
-   ============================================ */
-
-@media (max-width: 768px) {
-    .booking-stepper {
-        padding: var(--spacing-sm) 0;
-        margin-bottom: var(--spacing-md);
-    }
-
-    .stepper-step-label {
-        font-size: 0.75rem;
-    }
-    
-    .stepper-step-number {
-        width: 32px;
-        height: 32px;
-        font-size: var(--font-size-sm);
-    }
-
-    .stepper-container::before,
-    .stepper-progress {
-        top: 16px;
-    }
-
-    .step-navigation {
-        flex-direction: column;
-        gap: var(--spacing-md);
-    }
-    
-    .step-navigation .btn {
-        width: 100%;
-    }
-}
+/* Responsive mobile: ver mobile.css */

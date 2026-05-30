@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>@ViewData["Title"] - Sistema de Citas</title>
     <!-- Iconos del Layout Cliente -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -10,34 +10,37 @@
     <link rel="stylesheet" href="~/css/forms.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/components/steps.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/client-portal.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/mobile.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="client-layout">
-    <header class="client-header">
-        <div class="client-header-content">
-            <a asp-controller="Home" asp-action="Index" class="client-logo">
+
+    <!-- ══════════════ HEADER ══════════════ -->
+    <header class="hdr">
+        <div class="hdr-inner">
+
+            <!-- Logo -->
+            <a asp-controller="Home" asp-action="Index" class="hdr-logo">
                 <span class="material-symbols-outlined">spa</span>
                 <span>Sistema de Citas</span>
             </a>
-            <nav class="client-nav">
-                <a asp-controller="Home" asp-action="Index">
-                    <span>Nuestros Servicios</span>
-                </a>
-                <a asp-controller="Home" asp-action="About">
-                    <span>Nosotros</span>
-                </a>
-                <a asp-controller="Home" asp-action="Contact">
-                    <span>Contacto</span>
-                </a>
+
+            <!-- Nav principal (desktop: inline | mobile: drawer) -->
+            <nav class="hdr-nav" id="hdrNav" aria-label="Navegación principal">
+                <a asp-controller="Home" asp-action="Index" class="hdr-nav-link">Nuestros Servicios</a>
+                <a asp-controller="Home" asp-action="About"  class="hdr-nav-link">Nosotros</a>
+                <a asp-controller="Home" asp-action="Contact" class="hdr-nav-link">Contacto</a>
             </nav>
-            <div class="client-user-info">
+
+            <!-- Acciones del usuario (desktop) -->
+            <div class="hdr-actions" id="hdrActions">
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <a asp-controller="Appointments" asp-action="Index" class="nav-link-minimal">
+                    <a asp-controller="Appointments" asp-action="Index" class="hdr-nav-link">
                         <span class="material-symbols-outlined">event</span>
                         <span>Mis Citas</span>
                     </a>
-                    <span class="user-name">
+                    <span class="hdr-user">
                         <span class="material-symbols-outlined">account_circle</span>
                         <span>@User.Identity.Name</span>
                     </span>
@@ -45,11 +48,53 @@
                 }
                 else
                 {
-                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-login">Acceso Administrativo</a>
+                    <a asp-controller="Account" asp-action="Login" class="hdr-cta">Acceso Administrativo</a>
                 }
             </div>
+
+            <!-- Botón hamburguesa (solo mobile) -->
+            <button class="hdr-toggle" id="hdrToggle" aria-label="Abrir menú" aria-expanded="false">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+
         </div>
     </header>
+
+    <!-- Overlay del drawer (mobile) -->
+    <div class="hdr-overlay" id="hdrOverlay"></div>
+
+    <!-- Drawer mobile -->
+    <div class="hdr-drawer" id="hdrDrawer" aria-hidden="true">
+        <div class="hdr-drawer-top">
+            <span class="hdr-drawer-brand">Menú</span>
+            <button class="hdr-drawer-close" id="hdrDrawerClose" aria-label="Cerrar menú">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="hdr-drawer-nav">
+            <a asp-controller="Home" asp-action="Index">Nuestros Servicios</a>
+            <a asp-controller="Home" asp-action="About">Nosotros</a>
+            <a asp-controller="Home" asp-action="Contact">Contacto</a>
+        </nav>
+        <div class="hdr-drawer-foot">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="Appointments" asp-action="Index" class="hdr-drawer-foot-link">
+                    <span class="material-symbols-outlined">event</span>Mis Citas
+                </a>
+                <span class="hdr-drawer-foot-user">
+                    <span class="material-symbols-outlined">account_circle</span>
+                    <span>@User.Identity.Name</span>
+                </span>
+                <a asp-controller="Account" asp-action="Logout" class="btn btn-sm btn-secondary hdr-drawer-btn">Cerrar Sesión</a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="hdr-cta hdr-drawer-btn">Acceso Administrativo</a>
+            }
+        </div>
+    </div>
+    <!-- ══════════════ /HEADER ══════════════ -->
 
     <main class="client-main">
         @RenderBody()
@@ -63,6 +108,38 @@
     </footer>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+    (function () {
+        var toggle  = document.getElementById('hdrToggle');
+        var close   = document.getElementById('hdrDrawerClose');
+        var overlay = document.getElementById('hdrOverlay');
+        var drawer  = document.getElementById('hdrDrawer');
+        if (!toggle) return;
+
+        function open() {
+            drawer.classList.add('is-open');
+            overlay.classList.add('is-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            drawer.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function shut() {
+            drawer.classList.remove('is-open');
+            overlay.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            drawer.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        toggle.addEventListener('click', open);
+        close.addEventListener('click', shut);
+        overlay.addEventListener('click', shut);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') shut();
+        });
+    }());
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
